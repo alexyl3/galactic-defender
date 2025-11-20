@@ -6,12 +6,11 @@ import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 public class MainMenuScreen extends ScalableGameScreen {
     public MainMenuScreen() {
-        super(1280, 720);
+        super(720, 1280);
     }
 
     @Override
     public void show() {
-        GameApp.addFont("basic", "fonts/basic.ttf", 100);
         GameApp.addFont("basic", "fonts/basic.ttf", 100);
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 70);
         GameApp.addTexture("background","textures/background.png");
@@ -52,6 +51,7 @@ public class MainMenuScreen extends ScalableGameScreen {
 
     @Override
     public void hide() {
+
         GameApp.disposeFont("basic");
     }
 }
