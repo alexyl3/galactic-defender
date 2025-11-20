@@ -11,6 +11,6 @@ public class Main {
         GameApp.addScreen("GameScreen", new GameScreen());
 
         // Start game loop and show main menu screen
-        GameApp.start("Your Game Name", 800, 450, 60, false, "MainMenuScreen");
+        GameApp.start("Galactic defender", 500, 800, 60, false, "MainMenuScreen");
     }
 }

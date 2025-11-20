@@ -12,12 +12,13 @@ public class GameScreen extends ScalableGameScreen {
     public static final int SPACESHIP_SPEED = 300;
     public static final int SPACESHIP_SIZE = 80;
     public static final int BULLET_SPEED = 500;
-    boolean fireBullet = false;
+    float timeElapsed = 0;
     float spaceOffset;
+    float bullet_timer = 0;
     SpaceShip player;
     ArrayList<Float> bullets = new ArrayList<>();
     public GameScreen() {
-        super(1280, 720);
+        super(500, 800);
     }
 
     @Override
@@ -30,28 +31,22 @@ public class GameScreen extends ScalableGameScreen {
         player = new SpaceShip();
         player.x = getWorldWidth() / 2;
         player.y = 0;
-        player.shots = 20;
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
 
-        if (GameApp.isKeyPressed(Input.Keys.LEFT) || GameApp.isKeyPressed(Input.Keys.A)) {
-            player.x -= SPACESHIP_SPEED * delta;
-        } else if (GameApp.isKeyPressed(Input.Keys.RIGHT) || GameApp.isKeyPressed(Input.Keys.D)) {
-            player.x += SPACESHIP_SPEED * delta;
-        }
-        player.x = GameApp.clamp(player.x, 0, getWorldWidth());
+        timeElapsed += delta;
+        bullet_timer += delta;
 
-        if (GameApp.isKeyJustPressed(Input.Keys.E)) {
-            if (player.shots > 0) {
-                fireBullet = true;
-                GameApp.addInterpolator("bullet" + bullets.size(), 0f, GameApp.getWorldHeight(), 5f, "pow2");
-                bullets.add(player.x + GameApp.getTextureWidth("spaceship") / 2);
-                player.shots -= 1;
-            }
+        handlePlayerInput(delta);
+        if (bullet_timer >= 0.15) {
+            GameApp.addInterpolator("bullet" + bullets.size(), 0f, GameApp.getWorldHeight(), 5f, "pow2");
+            bullets.add(player.x + GameApp.getTextureWidth("spaceship") / 2);
+            bullet_timer = 0;
         }
+
         spaceOffset -= BG_SPEED * delta;
         if (spaceOffset < -1 * GameApp.getTextureHeight("space-bg")) {
             spaceOffset = 0;
@@ -63,7 +58,6 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.drawTexture("space-bg", 0, spaceOffset);
         GameApp.drawTexture("space-bg", 0, spaceOffset + GameApp.getTextureHeight("space-bg"));
         GameApp.drawTexture("spaceship", player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
-        GameApp.drawText("basic", "shots left: " + player.shots, 20, getWorldHeight() - 40, "white");
 
         for (int i = 0; i < bullets.size(); i++) {
             if (!GameApp.isInterpolatorFinished("bullet" + i)) {
@@ -81,4 +75,16 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.disposeTexture("space-bg");
         GameApp.disposeFont("basic");
     }
+
+    public void handlePlayerInput(float delta) {
+        if (GameApp.isKeyPressed(Input.Keys.LEFT) || GameApp.isKeyPressed(Input.Keys.A)) {
+            player.x -= SPACESHIP_SPEED * delta;
+        } else if (GameApp.isKeyPressed(Input.Keys.RIGHT) || GameApp.isKeyPressed(Input.Keys.D)) {
+            player.x += SPACESHIP_SPEED * delta;
+        }
+        player.x = GameApp.clamp(player.x, 0, getWorldWidth() - GameApp.getTextureWidth("spaceship"));
+
+
+    }
+
 }
