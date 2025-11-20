@@ -12,6 +12,7 @@ public class GameScreen extends ScalableGameScreen {
     public static final int SPACESHIP_SPEED = 300;
     public static final int SPACESHIP_SIZE = 80;
     public static final int BULLET_SPEED = 500;
+    public static final int HEART_SIZE = 50;
     float timeElapsed = 0;
     float spaceOffset;
     float bullet_timer = 0;
@@ -28,9 +29,11 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addTexture("spaceship", "textures/spaceship.png");
         GameApp.addTexture("shot", "textures/shot.png");
         GameApp.addFont("basic", "fonts/basic.ttf", 50);
+        GameApp.addTexture("heart", "textures/heart.png");
         player = new SpaceShip();
         player.x = getWorldWidth() / 2;
         player.y = 0;
+        player.lives = 5;
     }
 
     @Override
@@ -66,6 +69,10 @@ public class GameScreen extends ScalableGameScreen {
                 GameApp.drawTexture("shot", bullets.get(i), bulletY);
             }
         }
+
+        for (int i = 0; i < player.lives; i++) {
+            GameApp.drawTexture("heart", 10 + i * (HEART_SIZE), getWorldHeight() - HEART_SIZE, HEART_SIZE, HEART_SIZE);
+        }
         GameApp.endSpriteRendering();
 
     }
@@ -75,6 +82,7 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.disposeTexture("spaceship");
         GameApp.disposeTexture("space-bg");
         GameApp.disposeFont("basic");
+        GameApp.disposeTexture("heart");
     }
 
     public void handlePlayerInput(float delta) {
