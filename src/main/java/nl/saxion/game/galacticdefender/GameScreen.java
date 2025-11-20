@@ -41,6 +41,7 @@ public class GameScreen extends ScalableGameScreen {
         bullet_timer += delta;
 
         handlePlayerInput(delta);
+
         if (bullet_timer >= 0.15) {
             GameApp.addInterpolator("bullet" + bullets.size(), 0f, GameApp.getWorldHeight(), 5f, "pow2");
             bullets.add(player.x + GameApp.getTextureWidth("spaceship") / 2);
@@ -84,7 +85,5 @@ public class GameScreen extends ScalableGameScreen {
         }
         player.x = GameApp.clamp(player.x, 0, getWorldWidth() - GameApp.getTextureWidth("spaceship"));
 
-
     }
-
 }
