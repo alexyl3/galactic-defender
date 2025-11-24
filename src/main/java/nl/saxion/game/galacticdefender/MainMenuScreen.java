@@ -48,6 +48,8 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.endSpriteRendering();
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
             GameApp.switchScreen("YourGameScreen");}
+
+
     }
 
     @Override
