@@ -16,6 +16,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.addTexture("background","textures/background.png");
         GameApp.addTexture("play_button", "textures/play_button.png");
         GameApp.addTexture("Rectangle_box","textures/Rectangle_box.png");
+        GameApp.addTexture("asteriod","textures/asteriod.png");
     }
 
     @Override
@@ -47,11 +48,17 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.endSpriteRendering();
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
             GameApp.switchScreen("YourGameScreen");}
+
+
     }
 
     @Override
     public void hide() {
 
         GameApp.disposeFont("basic");
+        GameApp.disposeFont("Pixel_Emulator");
+        GameApp.disposeTexture("background");
+        GameApp.disposeTexture("play_button");
+        GameApp.disposeTexture("Rectangle_box");
     }
 }
