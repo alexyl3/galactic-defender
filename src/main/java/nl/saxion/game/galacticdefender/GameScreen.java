@@ -25,6 +25,7 @@ public class GameScreen extends ScalableGameScreen {
     ArrayList<Bullet> enemy_bullets = new ArrayList<>();
 
     ArrayList<Alien> aliens = new ArrayList<>();
+
     public GameScreen() {
         super(500, 800);
     }
@@ -38,13 +39,14 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addFont("basic", "fonts/basic.ttf", 50);
         GameApp.addTexture("heart", "textures/heart.png");
         GameApp.addTexture("alien", "textures/alien.png");
+        GameApp.addTexture("Asteroid", "textures/Asteroid.png");
         player = new SpaceShip();
         player.x = getWorldWidth() / 2;
         player.y = 0;
         int topMin = (int) (GameApp.getWorldHeight() - 200);
         int topMax = (int) GameApp.getWorldHeight();
 
-        for (int index = 0; index < 5; index++) {
+        for (int index = 0; index < 6; index++) {
             AsteriodX[index] = GameApp.randomInt(0, (int) GameApp.getWorldWidth());
             AsteriodY[index] = GameApp.randomInt(topMin, topMax);
         }
@@ -80,7 +82,7 @@ public class GameScreen extends ScalableGameScreen {
         }
 
         if (enemy_bullet_timer >= 0.15) {
-            for (Alien enemy: aliens) {
+            for (Alien enemy : aliens) {
                 GameApp.addInterpolator("enemy_bullet" + enemy_bullets.size(), getWorldHeight(), -100f, 7f, "pow2");
                 Bullet newBullet = new Bullet();
                 newBullet.x = enemy.x + (float) ALIEN_SIZE / 2;
@@ -97,8 +99,8 @@ public class GameScreen extends ScalableGameScreen {
         }
         handleCollision(delta);
 
-        for(int i = 0; i<5 ; i++){
-            AsteriodY[i] -= (int) ((BG_SPEED*0.3f) * delta);
+        for (int i = 0; i < 5; i++) {
+            AsteriodY[i] -= (int) ((BG_SPEED * 0.3f) * delta);
             if (AsteriodY[i] < -100) {
                 AsteriodY[i] = (int) (GameApp.getWorldHeight() + GameApp.randomInt(0, 200));
                 AsteriodX[i] = GameApp.randomInt(0, (int) getWorldWidth());
@@ -112,7 +114,11 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.drawTexture("space-bg", 0, spaceOffset + GameApp.getTextureHeight("space-bg"));
         GameApp.drawTexture("spaceship", player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
 
-        for (Bullet bullet: player_bullets) {
+        for (int i = 0; i < 5; i++) {
+            GameApp.drawTexture("Asteroid", AsteriodX[i], AsteriodY[i], 50, 30);
+        }
+
+        for (Bullet bullet : player_bullets) {
             if (!GameApp.isInterpolatorFinished(bullet.interpolator) && bullet.active) {
                 float bulletY = GameApp.updateInterpolator(bullet.interpolator) * delta * BULLET_SPEED + GameApp.getTextureHeight("spaceship");
                 bullet.y = bulletY;
@@ -123,7 +129,7 @@ public class GameScreen extends ScalableGameScreen {
             }
         }
 
-        for (Bullet bullet: enemy_bullets) {
+        for (Bullet bullet : enemy_bullets) {
             if (!GameApp.isInterpolatorFinished(bullet.interpolator) && bullet.active) {
                 float bulletY = GameApp.updateInterpolator(bullet.interpolator) * BULLET_SPEED * delta;
                 bullet.y = bulletY;
@@ -139,7 +145,7 @@ public class GameScreen extends ScalableGameScreen {
             GameApp.drawTexture("heart", 10 + i * (HEART_SIZE), getWorldHeight() - HEART_SIZE, HEART_SIZE, HEART_SIZE);
         }
 
-        for (Alien currAlien: aliens) {
+        for (Alien currAlien : aliens) {
             GameApp.drawTexture("alien", currAlien.x, currAlien.y, ALIEN_SIZE, ALIEN_SIZE);
             currAlien.y -= delta * BG_SPEED;
         }
@@ -164,8 +170,9 @@ public class GameScreen extends ScalableGameScreen {
         player.x = GameApp.clamp(player.x, 0, getWorldWidth() - GameApp.getTextureWidth("spaceship"));
 
     }
+
     public void handleCollision(float delta) {
-        for (Alien enemy: aliens) {
+        for (Alien enemy : aliens) {
             if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE) && enemy.alive) {
                 enemy.alive = false;
                 player.lives -= 1;
