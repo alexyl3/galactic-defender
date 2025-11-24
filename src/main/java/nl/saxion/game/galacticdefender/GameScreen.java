@@ -63,6 +63,14 @@ public class GameScreen extends ScalableGameScreen {
             spaceOffset = 0;
         }
 
+        for(int i = 0; i<5 ; i++){
+            AsteriodY[i] -= (int) ((BG_SPEED*0.3f) * delta);
+            if (AsteriodY[i] < -100) {
+                AsteriodY[i] = (int) (GameApp.getWorldHeight() + GameApp.randomInt(0, 200));
+                AsteriodX[i] = GameApp.randomInt(0, (int) getWorldWidth());
+            }
+        }
+
         // Draw elements
         GameApp.clearScreen();
         GameApp.startSpriteRendering();
