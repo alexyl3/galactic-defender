@@ -6,13 +6,13 @@ import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 public class MainMenuScreen extends ScalableGameScreen {
     public MainMenuScreen() {
-        super(720, 1280);
+        super(500, 800);
     }
 
     @Override
     public void show() {
         GameApp.addFont("basic", "fonts/basic.ttf", 100);
-        GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 70);
+        GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 32);
         GameApp.addTexture("background","textures/background.png");
         GameApp.addTexture("play_button", "textures/play_button.png");
         GameApp.addTexture("Rectangle_box","textures/Rectangle_box.png");
@@ -30,8 +30,8 @@ public class MainMenuScreen extends ScalableGameScreen {
         // Render the main menu
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
-        GameApp.drawTextureCentered("background",getWorldWidth()/2f,getWorldHeight()/2f);
-        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,750,500);
+        GameApp.drawTexture("background",0,0, getWorldWidth(), getWorldHeight());
+        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth(),100);
 
         float btnX = getWorldWidth() / 2f - 40;   // button width ~160
         float btnY = getWorldHeight() / 2f - 120;  // lower
