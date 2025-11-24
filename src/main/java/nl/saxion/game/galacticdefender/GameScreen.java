@@ -5,7 +5,6 @@ import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GameScreen extends ScalableGameScreen {
     public static final int BG_SPEED = 700;
@@ -16,7 +15,8 @@ public class GameScreen extends ScalableGameScreen {
     public static final int ALIEN_SIZE = 100;
     float timeElapsed = 0;
     float spaceOffset;
-    float bullet_timer = 0;
+    float player_bullet_timer = 0;
+    float enemy_bullet_timer = 0;
     float alien_timer = 0;
     SpaceShip player;
     ArrayList<Bullet> player_bullets = new ArrayList<>();
@@ -46,21 +46,21 @@ public class GameScreen extends ScalableGameScreen {
         super.render(delta);
 
         timeElapsed += delta;
-        bullet_timer += delta;
+        player_bullet_timer += delta;
+        enemy_bullet_timer += delta;
         alien_timer += delta;
 
         handlePlayerInput(delta);
 
-        if (bullet_timer >= 0.15) {
+        if (player_bullet_timer >= 0.15) {
             GameApp.addInterpolator("player_bullet" + player_bullets.size(), 0f, GameApp.getWorldHeight(), 5f, "pow2");
             Bullet newBullet = new Bullet();
-            newBullet.x = player.x + GameApp.getTextureWidth("spaceship") / 2;
+            newBullet.x = player.x + (float) GameApp.getTextureWidth("spaceship") / 2;
             newBullet.y = getWorldHeight();
             newBullet.interpolator = "player_bullet" + player_bullets.size();
             player_bullets.add(newBullet);
-            bullet_timer = 0;
+            player_bullet_timer = 0;
         }
-
         if (alien_timer > 3) {
             alien_timer = 0;
             Alien alien = new Alien();
@@ -68,6 +68,18 @@ public class GameScreen extends ScalableGameScreen {
             alien.x = GameApp.random(0, getWorldWidth() - ALIEN_SIZE);
             alien.y = getWorldHeight();
             aliens.add(alien);
+        }
+
+        if (enemy_bullet_timer >= 0.15) {
+            for (Alien enemy: aliens) {
+                GameApp.addInterpolator("enemy_bullet" + enemy_bullets.size(), getWorldHeight(), -100f, 7f, "pow2");
+                Bullet newBullet = new Bullet();
+                newBullet.x = enemy.x + (float) ALIEN_SIZE / 2;
+                newBullet.y = enemy.y;
+                newBullet.interpolator = "enemy_bullet" + enemy_bullets.size();
+                enemy_bullets.add(newBullet);
+                enemy_bullet_timer = 0;
+            }
         }
 
         spaceOffset -= BG_SPEED * delta;
@@ -94,12 +106,17 @@ public class GameScreen extends ScalableGameScreen {
             }
         }
 
-//        for (Bullet bullet: enemy_bullets) {
-//            if (!GameApp.isInterpolatorFinished("enemy_bullet" + i)) {
-//                float bulletY = GameApp.updateInterpolator("enemy_bullet" + i) * delta * BULLET_SPEED + GameApp.getTextureHeight("spaceship");
-//                GameApp.drawTexture("shot", player_bullets.get(i), bulletY);
-//            }
-//        }
+        for (Bullet bullet: enemy_bullets) {
+            if (!GameApp.isInterpolatorFinished(bullet.interpolator) && bullet.active) {
+                float bulletY = GameApp.updateInterpolator(bullet.interpolator) * BULLET_SPEED * delta;
+                bullet.y = bulletY;
+                GameApp.debug(bullet.y, bullet.x);
+                GameApp.drawTexture("shot", bullet.x, bulletY);
+                if (bullet.y < -20) {
+                    bullet.active = false;
+                }
+            }
+        }
 
         for (int i = 0; i < player.lives; i++) {
             GameApp.drawTexture("heart", 10 + i * (HEART_SIZE), getWorldHeight() - HEART_SIZE, HEART_SIZE, HEART_SIZE);
