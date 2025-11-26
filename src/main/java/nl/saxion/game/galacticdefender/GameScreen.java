@@ -178,5 +178,8 @@ public class GameScreen extends ScalableGameScreen {
                 player.lives -= 1;
             }
         }
+        if (player.lives <= 0) {
+            GameApp.switchScreen("GameOverScreen");
+        }
     }
 }

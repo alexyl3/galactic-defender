@@ -44,7 +44,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         String title = "Pixel_Emulator";
         float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
-        GameApp.drawText(title,"Galactic Defender",textX,textY,"white");
+        GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
         GameApp.endSpriteRendering();
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
             GameApp.switchScreen("YourGameScreen");}
