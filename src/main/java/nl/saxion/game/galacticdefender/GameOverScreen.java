@@ -3,8 +3,6 @@ import com.badlogic.gdx.Input;
 import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
-import java.util.ArrayList;
-
 public class GameOverScreen extends ScalableGameScreen {
 
     public GameOverScreen() {
@@ -14,7 +12,7 @@ public class GameOverScreen extends ScalableGameScreen {
     @Override
     public void show() {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
-        GameApp.addTexture("GameOverBackground","textures/GameOverBackground.png");
+        GameApp.addTexture("GameOverBackground", "textures/Other_Backgrounds/GameOverBackground.png");
 
     }
 

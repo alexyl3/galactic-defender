@@ -33,13 +33,13 @@ public class GameScreen extends ScalableGameScreen {
     @Override
     public void show() {
         spaceOffset = 0;
-        GameApp.addTexture("space-bg", "textures/space.png");
-        GameApp.addTexture("spaceship", "textures/spaceship.png");
-        GameApp.addTexture("shot", "textures/shot.png");
+        GameApp.addTexture("space-bg", "textures/Other_graphics/space.png");
+        GameApp.addTexture("spaceship", "textures/Other_graphics/spaceship.png");
+        GameApp.addTexture("shot", "textures/Other_graphics/shot.png");
         GameApp.addFont("basic", "fonts/basic.ttf", 50);
-        GameApp.addTexture("heart", "textures/heart.png");
-        GameApp.addTexture("alien", "textures/alien.png");
-        GameApp.addTexture("Asteroid", "textures/Asteroid.png");
+        GameApp.addTexture("heart", "textures/Other_graphics/heart.png");
+        GameApp.addTexture("alien", "textures/extra alien textures/alien.png");
+        GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
         player = new SpaceShip();
         player.x = getWorldWidth() / 2;
         player.y = 0;
