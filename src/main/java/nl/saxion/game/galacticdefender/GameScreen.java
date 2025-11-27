@@ -86,6 +86,7 @@ public class GameScreen extends ScalableGameScreen {
 
         if (enemy_bullet_timer >= 0.2) {
             for (Alien enemy : aliens) {
+                GameApp.addInterpolator("enemy_bullet" + enemy_bullets.size(), getWorldHeight(), -100f, 7f, "pow2");
                 Bullet newBullet = new Bullet();
                 newBullet.x = (float) (enemy.x + enemy.size * 0.9);
                 newBullet.y = enemy.y;
@@ -127,7 +128,7 @@ public class GameScreen extends ScalableGameScreen {
             if (!GameApp.isInterpolatorFinished(bullet.interpolator) && bullet.active) {
                 float bulletY = GameApp.updateInterpolator(bullet.interpolator) * delta * BULLET_SPEED + GameApp.getTextureHeight("spaceship");
                 bullet.y = bulletY;
-                GameApp.drawTexture("player_shot", bullet.x, bulletY);
+                GameApp.drawTexture("shot", bullet.x, bulletY);
                 if (bullet.y > getWorldHeight() + 50) {
                     bullet.active = false;
                 }
@@ -191,6 +192,9 @@ public class GameScreen extends ScalableGameScreen {
                 enemy_bullet.active = false;
                 player.lives -= 1;
             }
+        }
+        if (player.lives <= 0) {
+            GameApp.switchScreen("GameOverScreen");
         }
     }
 }
