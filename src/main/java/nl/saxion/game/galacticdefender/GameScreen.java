@@ -7,8 +7,7 @@ import nl.saxion.gameapp.screens.ScalableGameScreen;
 import java.util.ArrayList;
 
 public class GameScreen extends ScalableGameScreen {
-    int[] AsteriodX = new int[6];
-    int[] AsteriodY = new int[6];
+    Asteroid[] asteroids = new Asteroid[6];
     public static final int BG_SPEED = 700;
     public static final int SPACESHIP_SPEED = 300;
     public static final int SPACESHIP_SIZE = 80;
@@ -50,10 +49,16 @@ public class GameScreen extends ScalableGameScreen {
         int topMin = (int) (GameApp.getWorldHeight() - 200);
         int topMax = (int) GameApp.getWorldHeight();
 
-        for (int index = 0; index < 6; index++) {
-            AsteriodX[index] = GameApp.randomInt(0, (int) GameApp.getWorldWidth());
-            AsteriodY[index] = GameApp.randomInt(topMin, topMax);
+
+        for ( int i = 0; i < asteroids.length;i++){
+            asteroids[i] = new Asteroid();
+            asteroids[i].x = GameApp.randomInt(0,800);
+            asteroids[i].y = GameApp.randomInt(600,900);
+            asteroids[i].speed = 4;
         }
+
+
+
     }
 
     @Override
@@ -103,13 +108,8 @@ public class GameScreen extends ScalableGameScreen {
         }
         handleCollision(delta);
 
-        for (int i = 0; i < 5; i++) {
-            AsteriodY[i] -= (int) ((BG_SPEED * 0.3f) * delta);
-            if (AsteriodY[i] < -100) {
-                AsteriodY[i] = (int) (GameApp.getWorldHeight() + GameApp.randomInt(0, 200));
-                AsteriodX[i] = GameApp.randomInt(0, (int) getWorldWidth());
-            }
-        }
+
+
 
         // Draw elements
         GameApp.clearScreen();
@@ -117,9 +117,8 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.drawTexture("space-bg", 0, spaceOffset);
         GameApp.drawTexture("space-bg", 0, spaceOffset + GameApp.getTextureHeight("space-bg"));
 
-        for (int i = 0; i < 5; i++) {
-            GameApp.drawTexture("Asteroid", AsteriodX[i], AsteriodY[i], 50, 30);
-        }
+
+
         for (Alien currAlien : aliens) {
             GameApp.drawTexture("alien", currAlien.x, currAlien.y, ALIEN_SIZE, ALIEN_SIZE);
             currAlien.y -= delta * BG_SPEED;
@@ -152,6 +151,21 @@ public class GameScreen extends ScalableGameScreen {
 
         GameApp.drawText("Pixel_Emulator", "score: " + SCORE,  getWorldWidth() - 140, getWorldHeight() - 35, "white");
         GameApp.drawTexture("spaceship", player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
+
+        for(int i = 0; i< 4;i++){
+            Asteroid a = asteroids[i];
+            if (a != null && a.active) {
+                a.y -= a.speed * delta * 100;
+                if(a.y<-100){
+                    a.x = GameApp.randomInt(0, (int)getWorldWidth());
+                    a.y = GameApp.randomInt((int)getWorldHeight(), (int)getWorldHeight() + 300);
+                    a.speed = 4;
+                }
+
+                GameApp.drawTexture("Asteroid",a.x,a.y,80,80);
+            }
+
+        }
 
         GameApp.endSpriteRendering();
 
