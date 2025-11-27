@@ -70,6 +70,7 @@ public class GameScreen extends ScalableGameScreen {
 
         if (player_bullet_timer >= 0.15) {
             Bullet newBullet = new Bullet();
+            GameApp.addInterpolator("player_bullet" + player_bullets.size(), 0, getWorldHeight(), 5f, "pow2");
             newBullet.x = (float) (player.x + GameApp.getTextureWidth("spaceship") / 2.6);
             newBullet.y = getWorldHeight();
             newBullet.interpolator = "player_bullet" + player_bullets.size();
@@ -87,7 +88,6 @@ public class GameScreen extends ScalableGameScreen {
 
         if (enemy_bullet_timer >= 0.2) {
             for (Alien enemy : aliens) {
-                GameApp.addInterpolator("enemy_bullet" + enemy_bullets.size(), getWorldHeight(), -100f, 7f, "pow2");
                 Bullet newBullet = new Bullet();
                 newBullet.x = (float) (enemy.x + enemy.size * 0.9);
                 newBullet.y = enemy.y;
@@ -138,7 +138,6 @@ public class GameScreen extends ScalableGameScreen {
 
         for (Bullet bullet : enemy_bullets) {
             if (bullet.active) {
-                GameApp.debug(bullet.interpolator, bullet.x, bullet.y);
                 bullet.y -= delta * BULLET_SPEED * 5;
                 GameApp.drawTexture("enemy_shot", bullet.x, bullet.y, ENEMY_BULLET_SIZE, ENEMY_BULLET_SIZE);
                 if (bullet.y < -20) {
