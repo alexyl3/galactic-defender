@@ -13,10 +13,10 @@ public class MainMenuScreen extends ScalableGameScreen {
     public void show() {
         GameApp.addFont("basic", "fonts/basic.ttf", 100);
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 32);
-        GameApp.addTexture("background","textures/background.png");
-        GameApp.addTexture("play_button", "textures/play_button.png");
-        GameApp.addTexture("Rectangle_box","textures/Rectangle_box.png");
-        GameApp.addTexture("asteriod","textures/asteriod.png");
+        GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
+        GameApp.addTexture("play_button", "textures/Other_graphics/play_button.png");
+        GameApp.addTexture("Rectangle_box", "textures/Other_graphics/Rectangle_box.png");
+        GameApp.addTexture("asteriod", "textures/Other_graphics/asteriod.png");
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         String title = "Pixel_Emulator";
         float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
-        GameApp.drawText(title,"Galactic Defender",textX,textY,"white");
+        GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
         GameApp.endSpriteRendering();
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
             GameApp.switchScreen("YourGameScreen");}

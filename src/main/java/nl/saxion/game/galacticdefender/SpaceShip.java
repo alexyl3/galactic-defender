@@ -3,5 +3,5 @@ package nl.saxion.game.galacticdefender;
 public class SpaceShip {
     float x;
     float y;
-    int lives;
+    int lives = 3;
 }
