@@ -205,6 +205,13 @@ public class GameScreen extends ScalableGameScreen {
                     player.lives -= 1;
                 }
             }
+            for(Asteroid asteroid:asteroids){
+                if(GameApp.rectOverlap(asteroid.x,asteroid.y,80,80,player.x,player.y,SPACESHIP_SIZE,SPACESHIP_SIZE)&&
+                asteroid.active){
+                    asteroid.active = false;
+                    player.lives-=1;
+                }
+            }
             if (player.lives <= 0) {
                 GameApp.switchScreen("GameOverScreen");
             }
