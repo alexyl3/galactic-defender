@@ -6,17 +6,17 @@ import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 public class MainMenuScreen extends ScalableGameScreen {
     public MainMenuScreen() {
-        super(1280, 720);
+        super(500, 800);
     }
 
     @Override
     public void show() {
         GameApp.addFont("basic", "fonts/basic.ttf", 100);
-        GameApp.addFont("basic", "fonts/basic.ttf", 100);
-        GameApp.addFont("FreePixel", "fonts/FreePixel.ttf", 70);
-        GameApp.addTexture("background","textures/background.png");
-        GameApp.addTexture("play_button", "textures/play_button.png");
-        GameApp.addTexture("Rectangle_box","textures/Rectangle_box.png");
+        GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 32);
+        GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
+        GameApp.addTexture("play_button", "textures/Other_graphics/play_button.png");
+        GameApp.addTexture("Rectangle_box", "textures/Other_graphics/Rectangle_box.png");
+        GameApp.addTexture("asteriod", "textures/Other_graphics/asteriod.png");
     }
 
     @Override
@@ -31,8 +31,8 @@ public class MainMenuScreen extends ScalableGameScreen {
         // Render the main menu
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
-        GameApp.drawTextureCentered("background",getWorldWidth()/2f,getWorldHeight()/2f);
-        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,750,500);
+        GameApp.drawTexture("background",0,0, getWorldWidth(), getWorldHeight());
+        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth(),100);
 
         float btnX = getWorldWidth() / 2f - 40;   // button width ~160
         float btnY = getWorldHeight() / 2f - 120;  // lower
@@ -41,17 +41,24 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.endSpriteRendering();
 
         GameApp.startSpriteRendering();
-        String title = "FreePixel";
+        String title = "Pixel_Emulator";
         float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
-        GameApp.drawText(title,"Galactic Defender",textX,textY,"white");
+        GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
         GameApp.endSpriteRendering();
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
             GameApp.switchScreen("YourGameScreen");}
+
+
     }
 
     @Override
     public void hide() {
+
         GameApp.disposeFont("basic");
+        GameApp.disposeFont("Pixel_Emulator");
+        GameApp.disposeTexture("background");
+        GameApp.disposeTexture("play_button");
+        GameApp.disposeTexture("Rectangle_box");
     }
 }
