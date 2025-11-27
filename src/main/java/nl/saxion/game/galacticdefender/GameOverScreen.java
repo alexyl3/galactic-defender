@@ -13,7 +13,7 @@ public class GameOverScreen extends ScalableGameScreen {
     public void show() {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
         GameApp.addTexture("GameOverBackground", "textures/Other_Backgrounds/GameOverBackground.png");
-
+        GameApp.debug(GameScreen.SCORE);
     }
 
 
