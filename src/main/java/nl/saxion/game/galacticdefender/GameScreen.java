@@ -46,8 +46,7 @@ public class GameScreen extends ScalableGameScreen {
         player.x = getWorldWidth() / 2;
         player.y = 0;
         player.lives = 49;
-        int topMin = (int) (GameApp.getWorldHeight() - 200);
-        int topMax = (int) GameApp.getWorldHeight();
+
 
 
         for ( int i = 0; i < asteroids.length;i++){
