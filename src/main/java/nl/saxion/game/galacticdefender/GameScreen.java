@@ -10,12 +10,13 @@ public class GameScreen extends ScalableGameScreen {
     int[] AsteriodX = new int[6];
     int[] AsteriodY = new int[6];
     public static final int BG_SPEED = 700;
-    public static final int SPACESHIP_SPEED = 300;
+    public static final int SPACESHIP_SPEED = 200;
     public static final int SPACESHIP_SIZE = 80;
     public static final int BULLET_SPEED = 500;
     public static final int HEART_SIZE = 50;
     public static final int ALIEN_SIZE = 100;
     public static final int ENEMY_BULLET_SIZE = 50;
+    public static final int PLAYER_BULLET_SIZE = 30;
     public static int SCORE = 0;
     float timeElapsed = 0;
     float spaceOffset;
@@ -88,12 +89,14 @@ public class GameScreen extends ScalableGameScreen {
 
         if (enemy_bullet_timer >= 0.2) {
             for (Alien enemy : aliens) {
-                Bullet newBullet = new Bullet();
-                newBullet.x = (float) (enemy.x + enemy.size * 0.9);
-                newBullet.y = enemy.y;
-                newBullet.interpolator = "enemy_bullet" + enemy_bullets.size();
-                enemy_bullets.add(newBullet);
-                enemy_bullet_timer = 0;
+                if (enemy.alive) {
+                    Bullet newBullet = new Bullet();
+                    newBullet.x = (float) (enemy.x + enemy.size * 0.9);
+                    newBullet.y = enemy.y;
+                    newBullet.interpolator = "enemy_bullet" + enemy_bullets.size();
+                    enemy_bullets.add(newBullet);
+                    enemy_bullet_timer = 0;
+                }
             }
         }
 
@@ -118,18 +121,24 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.drawTexture("space-bg", 0, spaceOffset + GameApp.getTextureHeight("space-bg"));
 
         for (int i = 0; i < 5; i++) {
-            GameApp.drawTexture("Asteroid", AsteriodX[i], AsteriodY[i], 50, 30);
+            GameApp.drawTexture("Asteroid", AsteriodX[i], AsteriodY[i], 60, 60);
         }
         for (Alien currAlien : aliens) {
-            GameApp.drawTexture("alien", currAlien.x, currAlien.y, ALIEN_SIZE, ALIEN_SIZE);
-            currAlien.y -= delta * BG_SPEED;
+            if (currAlien.health <= 0) {
+                SCORE += 100;
+                currAlien.alive = false;
+            }
+            if (currAlien.alive) {
+                GameApp.drawTexture("alien", currAlien.x, currAlien.y, ALIEN_SIZE, ALIEN_SIZE);
+                currAlien.y -= delta * BG_SPEED;
+            }
         }
 
         for (Bullet bullet : player_bullets) {
             if (!GameApp.isInterpolatorFinished(bullet.interpolator) && bullet.active) {
                 float bulletY = GameApp.updateInterpolator(bullet.interpolator) * delta * BULLET_SPEED + GameApp.getTextureHeight("spaceship");
                 bullet.y = bulletY;
-                GameApp.drawTexture("player_shot", bullet.x, bulletY);
+                GameApp.drawTexture("player_shot", bullet.x, bulletY, PLAYER_BULLET_SIZE, PLAYER_BULLET_SIZE);
                 if (bullet.y > getWorldHeight() + 50) {
                     bullet.active = false;
                 }
@@ -183,7 +192,7 @@ public class GameScreen extends ScalableGameScreen {
         for (Alien enemy : aliens) {
             if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE) && enemy.alive) {
                 enemy.alive = false;
-                player.lives -= 1;
+                player.lives -= 5;
             }
         }
 
@@ -192,6 +201,17 @@ public class GameScreen extends ScalableGameScreen {
             enemy_bullet.active) {
                 enemy_bullet.active = false;
                 player.lives -= 1;
+            }
+        }
+
+        for (Bullet player_bullet: player_bullets) {
+            if (player_bullet.active) {
+                for (Alien enemy: aliens) {
+                    if (enemy.alive && GameApp.rectOverlap(player_bullet.x, player_bullet.y, PLAYER_BULLET_SIZE, PLAYER_BULLET_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE)) {
+                        enemy.health -= 1;
+                        player_bullet.active = false;
+                    }
+                }
             }
         }
         if (player.lives <= 0) {
