@@ -18,6 +18,7 @@ public class GameScreen extends ScalableGameScreen {
     public static final int ENEMY_BULLET_SIZE = 50;
     public static final int PLAYER_BULLET_SIZE = 30;
     public static int SCORE = 0;
+    public static String ENVIRONMENT = "basic";
     float timeElapsed = 0;
     float spaceOffset;
     float player_bullet_timer = 0;
@@ -78,7 +79,7 @@ public class GameScreen extends ScalableGameScreen {
             player_bullets.add(newBullet);
             player_bullet_timer = 0;
         }
-        if (alien_timer > 3) {
+        if (alien_timer > 2) {
             alien_timer = 0;
             Alien alien = new Alien();
             alien.size = GameApp.randomInt(10, 30);
@@ -124,7 +125,7 @@ public class GameScreen extends ScalableGameScreen {
             GameApp.drawTexture("Asteroid", AsteriodX[i], AsteriodY[i], 60, 60);
         }
         for (Alien currAlien : aliens) {
-            if (currAlien.health <= 0) {
+            if (currAlien.alive && currAlien.health <= 0) {
                 SCORE += 100;
                 currAlien.alive = false;
             }
@@ -179,6 +180,9 @@ public class GameScreen extends ScalableGameScreen {
     }
 
     public void handlePlayerInput(float delta) {
+        if (GameApp.isKeyJustPressed(Input.Keys.P)) {
+            GameApp.switchScreen("PauseScreen");
+        }
         if (GameApp.isKeyPressed(Input.Keys.LEFT) || GameApp.isKeyPressed(Input.Keys.A)) {
             player.x -= SPACESHIP_SPEED * delta;
         } else if (GameApp.isKeyPressed(Input.Keys.RIGHT) || GameApp.isKeyPressed(Input.Keys.D)) {
