@@ -43,7 +43,7 @@ public class ManualScreen extends ScalableGameScreen {
 
         GameApp.endSpriteRendering();
 
-        if (GameApp.isKeyPressed(Input.Keys.SPACE)) {
+        if (GameApp.isKeyPressed(Input.Keys.SPACE)||GameApp.isKeyPressed(Input.Keys.ESCAPE)) {
             GameApp.switchScreen("MainMenuScreen");
         }
     }
