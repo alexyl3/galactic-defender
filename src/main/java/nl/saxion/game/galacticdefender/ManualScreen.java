@@ -51,7 +51,7 @@ public class ManualScreen extends ScalableGameScreen {
     @Override
     public void hide() {
         GameApp.disposeFont("Pixel_Emulator");
-        GameApp.drawTexture("ManualBackground");
+        GameApp.disposeTexture("ManualBackground");
 
     }
 }
