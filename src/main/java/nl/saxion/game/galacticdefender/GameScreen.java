@@ -7,6 +7,7 @@ import nl.saxion.gameapp.screens.ScalableGameScreen;
 import java.util.ArrayList;
 
 public class GameScreen extends ScalableGameScreen {
+    Asteroid[] asteroids = new Asteroid[6];
     public static final int BG_SPEED = 700;
     public static final int SPACESHIP_SPEED = 300;
     public static final int SPACESHIP_SIZE = 80;
@@ -20,13 +21,11 @@ public class GameScreen extends ScalableGameScreen {
     float player_bullet_timer = 0;
     float enemy_bullet_timer = 0;
     float alien_timer = 0;
-    float asteroid_timer = 0;
     SpaceShip player;
     ArrayList<Bullet> player_bullets = new ArrayList<>();
     ArrayList<Bullet> enemy_bullets = new ArrayList<>();
 
     ArrayList<Alien> aliens = new ArrayList<>();
-    ArrayList<Asteroid> asteroids = new ArrayList<>();
 
     public GameScreen() {
         super(500, 800);
@@ -50,7 +49,17 @@ public class GameScreen extends ScalableGameScreen {
 
 
 
-    }
+        for ( int i = 0; i < asteroids.length;i++){
+            asteroids[i] = new Asteroid();
+            asteroids[i].x = GameApp.randomInt(0,800);
+            asteroids[i].y = GameApp.randomInt(600,900);
+            asteroids[i].speed = 4;
+
+
+
+
+        }}
+
         @Override
         public void render(float delta) {
             super.render(delta);
@@ -59,8 +68,7 @@ public class GameScreen extends ScalableGameScreen {
             player_bullet_timer += delta;
             enemy_bullet_timer += delta;
             alien_timer += delta;
-            asteroid_timer += delta;
-        SCORE += (int) (delta * 60);
+            SCORE += (int) (delta * 60);
 
             handlePlayerInput(delta);
 
@@ -92,17 +100,7 @@ public class GameScreen extends ScalableGameScreen {
                     enemy_bullet_timer = 0;
                 }
             }
-            if ( asteroid_timer > 1){
-                asteroid_timer = 0;
-                Asteroid newAsteroid = new Asteroid();
-                newAsteroid.x = GameApp.randomInt(0,800);
-                newAsteroid.y = GameApp.randomInt(600,900);
-                newAsteroid.speed = 6;
-                newAsteroid.active = true;
-                asteroids.add(newAsteroid);
 
-
-            }
             spaceOffset -= BG_SPEED * delta;
             if (spaceOffset < -1 * GameApp.getTextureHeight("space-bg")) {
                 spaceOffset = 0;
@@ -151,13 +149,20 @@ public class GameScreen extends ScalableGameScreen {
             GameApp.drawText("Pixel_Emulator", "score: " + SCORE,  getWorldWidth() - 140, getWorldHeight() - 35, "white");
             GameApp.drawTexture("spaceship", player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
 
-            for(Asteroid currAsteroid:asteroids){
-                GameApp.drawTexture("Asteroid",currAsteroid.x,currAsteroid.y,80,80);
-                currAsteroid.y -= delta * BG_SPEED;
+            for(int i = 0; i< 4;i++){
+                Asteroid a = asteroids[i];
+                if (a != null && a.active) {
+                    a.y -= a.speed * delta * 100;
+                    if(a.y<-100){
+                        a.x = GameApp.randomInt(0, (int)getWorldWidth());
+                        a.y = GameApp.randomInt((int)getWorldHeight(), (int)getWorldHeight() + 300);
+                        a.speed = 4;
+                    }
+
+                    GameApp.drawTexture("Asteroid",a.x,a.y,80,80);
+                }
 
             }
-
-
 
             GameApp.endSpriteRendering();
 
@@ -204,7 +209,7 @@ public class GameScreen extends ScalableGameScreen {
                 if(GameApp.rectOverlap(asteroid.x,asteroid.y,80,80,player.x,player.y,SPACESHIP_SIZE,SPACESHIP_SIZE)&&
                 asteroid.active){
                     asteroid.active = false;
-                    player.lives-=5;
+                    player.lives-=1;
                 }
             }
             if (player.lives <= 0) {
