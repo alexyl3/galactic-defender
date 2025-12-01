@@ -4,7 +4,9 @@ import com.badlogic.gdx.Input;
 import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
-public class  MainMenuScreen extends ScalableGameScreen {
+import java.awt.*;
+
+public class MainMenuScreen extends ScalableGameScreen {
     public MainMenuScreen() {
         super(500, 800);
     }
@@ -13,9 +15,11 @@ public class  MainMenuScreen extends ScalableGameScreen {
     public void show() {
         GameApp.addFont("basic", "fonts/basic.ttf", 100);
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 32);
-        GameApp.addTexture("background","textures/background.png");
-        GameApp.addTexture("play_button", "textures/play_button.png");
-        GameApp.addTexture("Rectangle_box","textures/Rectangle_box.png");
+        GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
+        GameApp.addTexture("play_button", "textures/Other_graphics/play_button.png");
+        GameApp.addTexture("Rectangle_box", "textures/Other_graphics/Rectangle_box.png");
+        GameApp.addTexture("asteriod", "textures/Other_graphics/asteriod.png");
+        GameApp.addTexture("Button","textures/Other_graphics/Button.png");
     }
 
     @Override
@@ -26,6 +30,12 @@ public class  MainMenuScreen extends ScalableGameScreen {
         if (GameApp.isKeyJustPressed(Input.Keys.ENTER)) {
             GameApp.switchScreen("GameScreen");
         }
+        float mouseX = getMouseX();
+        float mouseY = getMouseY();
+        if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-50,getWorldHeight()-50,GameApp.getTextureWidth("Button"),GameApp.getTextureHeight("Button"))){
+            GameApp.switchScreen("ManualScreen");
+        }
+
 
         // Render the main menu
         GameApp.clearScreen("black");
@@ -37,21 +47,27 @@ public class  MainMenuScreen extends ScalableGameScreen {
         float btnY = getWorldHeight() / 2f - 120;  // lower
 
         GameApp.drawTexture("play_button", btnX, btnY, 120, 80);
-        GameApp.endSpriteRendering();
 
-        GameApp.startSpriteRendering();
         String title = "Pixel_Emulator";
         float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
-        GameApp.drawText(title,"Galactic Defender",textX,textY,"white");
+        GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
+        GameApp.drawTexture("Button",getWorldWidth()-50,getWorldHeight()-50);
         GameApp.endSpriteRendering();
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
             GameApp.switchScreen("YourGameScreen");}
+
+
     }
 
     @Override
     public void hide() {
 
         GameApp.disposeFont("basic");
+        GameApp.disposeFont("Pixel_Emulator");
+        GameApp.disposeTexture("background");
+        GameApp.disposeTexture("play_button");
+        GameApp.disposeTexture("Rectangle_box");
+        GameApp.disposeTexture("Button");
     }
 }
