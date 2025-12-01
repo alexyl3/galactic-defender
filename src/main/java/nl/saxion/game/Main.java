@@ -1,8 +1,10 @@
 package nl.saxion.game;
 
+import nl.saxion.game.galacticdefender.*;
 import nl.saxion.game.galacticdefender.GameOverScreen;
 import nl.saxion.game.galacticdefender.GameScreen;
 import nl.saxion.game.galacticdefender.MainMenuScreen;
+import nl.saxion.game.galacticdefender.NewStageScreen;
 import nl.saxion.gameapp.GameApp;
 
 public class Main {
@@ -12,6 +14,7 @@ public class Main {
         GameApp.addScreen("GameScreen", new GameScreen());
         GameApp.addScreen("PauseScreen", new PauseScreen());
         GameApp.addScreen("GameOverScreen", new GameOverScreen());
+        GameApp.addScreen("NewStageScreen", new NewStageScreen());
         GameApp.addScreen("ManualScreen", new ManualScreen());
 
         // Start game loop and show main menu screen

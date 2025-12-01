@@ -5,6 +5,7 @@ import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameScreen extends ScalableGameScreen {
     Asteroid[] asteroids = new Asteroid[6];
@@ -15,7 +16,10 @@ public class GameScreen extends ScalableGameScreen {
     public static final int HEART_SIZE = 50;
     public static final int ALIEN_SIZE = 100;
     public static final int ENEMY_BULLET_SIZE = 50;
+    public static final int PLAYER_BULLET_SIZE = 30;
     public static int SCORE = 0;
+    public static int STAGE = 0;
+    ArrayList<String> environments =  new ArrayList<>(Arrays.asList("basic", "desert", "fire", "ice"));
     float timeElapsed = 0;
     float spaceOffset;
     float player_bullet_timer = 0;
@@ -37,11 +41,13 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addTexture("space-bg", "textures/Other_graphics/space.png");
         GameApp.addTexture("spaceship", "textures/Other_graphics/spaceship.png");
         GameApp.addTexture("player_shot", "textures/Other_graphics/shot.png");
-        GameApp.addTexture("enemy_shot", "textures/fire_textures/BulletFire.png");
-        GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 16);
         GameApp.addTexture("heart", "textures/Other_graphics/heart.png");
-        GameApp.addTexture("alien", "textures/Alien3_no_bg.png");
+        GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 16);
+        GameApp.addTexture("enemy_shot", "textures/Other_graphics/BulletFire.png");
         GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
+
+        GameApp.addTexture("test", "textures/fire_textures/spaceship.png");
+        GameApp.addTexture("alien", "textures/" + environments.get(STAGE) + "_textures/alien.png");
         player = new SpaceShip();
         player.x = getWorldWidth() / 2;
         player.y = 0;
@@ -70,7 +76,11 @@ public class GameScreen extends ScalableGameScreen {
             alien_timer += delta;
             SCORE += (int) (delta * 60);
 
-            handlePlayerInput(delta);
+        handlePlayerInput(delta);
+        if (SCORE > 1000 + STAGE * 1000) {
+            STAGE ++;
+            GameApp.switchScreen("NewStageScreen");
+        }
 
             if (player_bullet_timer >= 0.15) {
                 Bullet newBullet = new Bullet();
@@ -90,8 +100,9 @@ public class GameScreen extends ScalableGameScreen {
                 aliens.add(alien);
             }
 
-            if (enemy_bullet_timer >= 0.2) {
-                for (Alien enemy : aliens) {
+        if (enemy_bullet_timer >= 0.2) {
+            for (Alien enemy : aliens) {
+                if (enemy.alive) {
                     Bullet newBullet = new Bullet();
                     newBullet.x = (float) (enemy.x + enemy.size * 0.9);
                     newBullet.y = enemy.y;
@@ -100,12 +111,13 @@ public class GameScreen extends ScalableGameScreen {
                     enemy_bullet_timer = 0;
                 }
             }
+        }
 
             spaceOffset -= BG_SPEED * delta;
             if (spaceOffset < -1 * GameApp.getTextureHeight("space-bg")) {
                 spaceOffset = 0;
             }
-            handleCollision(delta);
+            handleCollision();
 
 
             // Draw elements
@@ -117,8 +129,11 @@ public class GameScreen extends ScalableGameScreen {
 
 
             for (Alien currAlien : aliens) {
-                GameApp.drawTexture("alien", currAlien.x, currAlien.y, ALIEN_SIZE, ALIEN_SIZE);
-                currAlien.y -= delta * BG_SPEED;
+                if (currAlien.alive) {
+                    GameApp.drawTexture("alien", currAlien.x, currAlien.y, ALIEN_SIZE, ALIEN_SIZE);
+                    GameApp.debug(currAlien.health);
+                    currAlien.y -= delta * BG_SPEED;
+                }
             }
 
             for (Bullet bullet : player_bullets) {
@@ -147,7 +162,6 @@ public class GameScreen extends ScalableGameScreen {
             }
 
             GameApp.drawText("Pixel_Emulator", "score: " + SCORE,  getWorldWidth() - 140, getWorldHeight() - 35, "white");
-            GameApp.drawTexture("spaceship", player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
 
             for(int i = 0; i< 4;i++){
                 Asteroid a = asteroids[i];
@@ -163,6 +177,7 @@ public class GameScreen extends ScalableGameScreen {
                 }
 
             }
+            GameApp.drawTexture("spaceship", player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
 
             GameApp.endSpriteRendering();
 
@@ -180,23 +195,26 @@ public class GameScreen extends ScalableGameScreen {
             GameApp.disposeTexture("heart");
         }
 
-        public void handlePlayerInput(float delta) {
-            if (GameApp.isKeyPressed(Input.Keys.LEFT) || GameApp.isKeyPressed(Input.Keys.A)) {
-                player.x -= SPACESHIP_SPEED * delta;
-            } else if (GameApp.isKeyPressed(Input.Keys.RIGHT) || GameApp.isKeyPressed(Input.Keys.D)) {
-                player.x += SPACESHIP_SPEED * delta;
-            }
-            player.x = GameApp.clamp(player.x, 0, getWorldWidth() - GameApp.getTextureWidth("spaceship"));
+    public void handlePlayerInput(float delta) {
+        if (GameApp.isKeyJustPressed(Input.Keys.P)) {
+            GameApp.switchScreen("PauseScreen");
+        }
+        if (GameApp.isKeyPressed(Input.Keys.LEFT) || GameApp.isKeyPressed(Input.Keys.A)) {
+            player.x -= SPACESHIP_SPEED * delta;
+        } else if (GameApp.isKeyPressed(Input.Keys.RIGHT) || GameApp.isKeyPressed(Input.Keys.D)) {
+            player.x += SPACESHIP_SPEED * delta;
+        }
+        player.x = GameApp.clamp(player.x, 0, getWorldWidth() - GameApp.getTextureWidth("spaceship"));
 
         }
 
-        public void handleCollision(float delta) {
-            for (Alien enemy : aliens) {
-                if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE) && enemy.alive) {
-                    enemy.alive = false;
-                    player.lives -= 1;
-                }
+    public void handleCollision() {
+        for (Alien enemy : aliens) {
+            if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE) && enemy.alive) {
+                enemy.alive = false;
+                player.lives -= 5;
             }
+        }
 
             for (Bullet enemy_bullet: enemy_bullets) {
                 if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, enemy_bullet.x, enemy_bullet.y, ENEMY_BULLET_SIZE, ENEMY_BULLET_SIZE) &&
@@ -210,9 +228,24 @@ public class GameScreen extends ScalableGameScreen {
                 asteroid.active){
                     asteroid.active = false;
                     player.lives-=1;
+            }
+        }
+
+        for (Bullet player_bullet: player_bullets) {
+            if (player_bullet.active) {
+                for (Alien enemy : aliens) {
+                    if (enemy.alive && GameApp.rectOverlap(player_bullet.x, player_bullet.y, PLAYER_BULLET_SIZE, PLAYER_BULLET_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE)) {
+                        enemy.health -= 1;
+                        player_bullet.active = false;
+                        if (enemy.health <= 0) {
+                            enemy.alive = false;
+                        }
+                    }
                 }
             }
-            if (player.lives <= 0) {
-                GameApp.switchScreen("GameOverScreen");
-            }
-        }}
+        }
+        if (player.lives <= 0) {
+            GameApp.switchScreen("GameOverScreen");
+        }
+    }
+}
