@@ -24,26 +24,27 @@ public class ManualScreen extends ScalableGameScreen {
         GameApp.startSpriteRendering();
 
         GameApp.drawTexture("ManualBackground",0, 0, getWorldWidth(), getWorldHeight());
-        String font = "Pixel_Emulator";
-        float left = getWorldWidth() / 2f - 200f;
-        float y = getWorldHeight() - 80f;
-        float lh = 38f; // line height
+        String title = "Pixel_Emulator";
+        float textX1 = getWorldWidth() / 2f - 200f;
+        float textY1= getWorldHeight() - 80f;
 
-        GameApp.drawText(font, "MANUAL", getWorldWidth()/2f - 80f, y, "white"); y -= lh * 1.6f;
+        GameApp.drawText(title, "MANUAL", textX1+160,textY1+40 , "yellow-300");
 
-        GameApp.drawText(font, "Controls:", left, y, "white"); y -= lh;
-        GameApp.drawText(font, "- Move:  Arrow keys", left, y, "white"); y -= lh;
-        GameApp.drawText(font, "- Pause: P", left, y, "white"); y -= lh * 1.5f;
 
-        GameApp.drawText(font, "Goals:", left, y, "white"); y -= lh;
-        GameApp.drawText(font, "- Destroy aliens, collect power-ups,", left, y, "white"); y -= lh;
-        GameApp.drawText(font, "  and avoid getting hit.", left, y, "white"); y -= lh * 1.6f;
+        GameApp.drawText(title, "Controls:", textX1, textY1-260, "yellow-300");
+        GameApp.drawText(title, "- Move:  Arrow keys", textX1-30, textY1-320, "white");
+        GameApp.drawText(title, "- Pause: P", textX1-30,textY1-360, "white");
 
-        GameApp.drawText(font, "Press ESC or SPACE to return", left, y, "yellow");
+        GameApp.drawText(title, "Goals:", textX1, textY1-460, "yellow-300");
+        GameApp.drawText(title, "- Destroy aliens", textX1-30, textY1-520, "white");
+        GameApp.drawText(title, "- collect power-ups", textX1-30, textY1-560, "white");
+        GameApp.drawText(title, "- and avoid getting hit.", textX1-30, textY1-600, "white");
+
+        GameApp.drawText(title, "Press SPACE to return", textX1, textY1-700, "yellow-300");
 
         GameApp.endSpriteRendering();
 
-        if (GameApp.isKeyPressed(Input.Keys.SPACE)||GameApp.isKeyPressed(Input.Keys.ESCAPE)) {
+        if (GameApp.isKeyPressed(Input.Keys.ESCAPE)) {
             GameApp.switchScreen("MainMenuScreen");
         }
     }
