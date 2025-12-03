@@ -35,13 +35,13 @@ public class GameScreen extends ScalableGameScreen {
     @Override
     public void show() {
         spaceOffset = 0;
-        GameApp.addTexture("space-bg", "textures/Other_graphics/space.png");
-        GameApp.addTexture("spaceship", "textures/Other_graphics/spaceship.png");
+        GameApp.addTexture("space-bg", "textures/basic_textures/space.png");
+        GameApp.addTexture("spaceship", "textures/basic_textures/spaceship.png");
         GameApp.addTexture("player_shot", "textures/Other_graphics/shot.png");
-        GameApp.addTexture("enemy_shot", "textures/fire_textures/BulletFire.png");
+        GameApp.addTexture("enemy_shot", "textures/basic_textures/bullet.png");
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 16);
         GameApp.addTexture("heart", "textures/Other_graphics/heart.png");
-        GameApp.addTexture("alien", "textures/Alien3_no_bg.png");
+        GameApp.addTexture("alien", "textures/extra_alien_textures/Alien1.png");
         GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
         player = new SpaceShip();
         player.x = getWorldWidth() / 2;
@@ -60,7 +60,8 @@ public class GameScreen extends ScalableGameScreen {
             enemy_bullet_timer += delta;
             alien_timer += delta;
             asteroid_timer += delta;
-        SCORE += (int) (delta * 60);
+            SCORE += (int)(delta * 60);
+
 
             handlePlayerInput(delta);
 
@@ -158,8 +159,12 @@ public class GameScreen extends ScalableGameScreen {
             }
 
 
-
             GameApp.endSpriteRendering();
+
+            if(SCORE >= 100){
+                GameApp.switchScreen("RoundCompleteScreen");
+            }
+
 
         }
 
