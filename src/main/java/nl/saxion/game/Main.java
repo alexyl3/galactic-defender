@@ -10,7 +10,7 @@ public class Main {
         GameApp.addScreen("GameScreen", new GameScreen());
         GameApp.addScreen("PauseScreen", new PauseScreen());
         GameApp.addScreen("GameOverScreen", new GameOverScreen());
-        GameApp.addScreen("RoundCompleteScreen", new RoundCompleteScreen());
+        GameApp.addScreen("NewStageScreen", new NewStageScreen());
 
         // Start game loop and show main menu screen
         GameApp.start("Galactic defender", 500, 800, 60, false, "MainMenuScreen");
