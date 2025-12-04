@@ -54,7 +54,6 @@ public class GameScreen extends ScalableGameScreen {
         player.lives = 49;
 
 
-
         for ( int i = 0; i < asteroids.length;i++){
             asteroids[i] = new Asteroid();
             asteroids[i].x = GameApp.randomInt(0,800);
@@ -73,7 +72,7 @@ public class GameScreen extends ScalableGameScreen {
             SCORE += (int) (delta * 60);
 
             handlePlayerInput(delta);
-            if (SCORE > 1000 + STAGE * 500) {
+            if (SCORE > 500 + STAGE * 500) {
                 STAGE ++;
                 GameApp.switchScreen("NewStageScreen");
             }
@@ -87,7 +86,8 @@ public class GameScreen extends ScalableGameScreen {
                 player_bullets.add(newBullet);
                 player_bullet_timer = 0;
             }
-            if (alien_timer > 3) {
+            if (alien_timer > 2
+            ) {
                 alien_timer = 0;
                 Alien alien = new Alien();
                 alien.size = GameApp.randomInt(10, 30);
