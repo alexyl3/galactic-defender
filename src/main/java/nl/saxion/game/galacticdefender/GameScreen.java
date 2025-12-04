@@ -5,6 +5,7 @@ import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameScreen extends ScalableGameScreen {
     public static final int BG_SPEED = 700;
@@ -54,7 +55,6 @@ public class GameScreen extends ScalableGameScreen {
         player.lives = 49;
 
 
-
     }
         @Override
         public void render(float delta) {
@@ -69,7 +69,7 @@ public class GameScreen extends ScalableGameScreen {
 
 
             handlePlayerInput(delta);
-            if (SCORE > 100 + STAGE * 500) {
+            if (SCORE > 500 + STAGE * 500) {
                 STAGE ++;
                 GameApp.switchScreen("NewStageScreen");
             }
@@ -105,11 +105,11 @@ public class GameScreen extends ScalableGameScreen {
                     }
                 }
             }
-            if ( asteroid_timer > 1){
+            if (asteroid_timer > 0.5){
                 asteroid_timer = 0;
                 Asteroid newAsteroid = new Asteroid();
                 newAsteroid.x = GameApp.randomInt(0,800);
-                newAsteroid.y = GameApp.randomInt(600,900);
+                newAsteroid.y = GameApp.randomInt(800,1000);
                 newAsteroid.speed = 6;
                 newAsteroid.active = true;
                 asteroids.add(newAsteroid);
