@@ -4,26 +4,24 @@ import com.badlogic.gdx.Input;
 import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
-public class RoundCompleteScreen extends ScalableGameScreen {
+public class NewStageScreen extends ScalableGameScreen {
     float centreY;
     float text1Y;
     float text2Y;
     float centreY2;
-    public RoundCompleteScreen() {
+
+    public NewStageScreen() {
         super(500, 800);
-
-
     }
     @Override
     public void show() {
         centreY = getWorldHeight()/2f+60;
-        centreY2 = getWorldHeight()/2f-60;
+        centreY2 = getWorldHeight()/2f-30;
         text1Y = getWorldHeight();
         text2Y = 0;
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
         GameApp.addTexture("GameOverBackground", "textures/Other_Backgrounds/GameOverBackground.png");
         GameApp.debug(GameScreen.SCORE);
-
     }
 
 
@@ -52,7 +50,7 @@ public class RoundCompleteScreen extends ScalableGameScreen {
         GameApp.drawTexture("GameOverBackground",0,0,getWorldWidth(),getWorldHeight());
         GameApp.drawTextCentered("Pixel_Emulator", "Round " , 300,text1Y, "white");
         GameApp.drawTextCentered("Pixel_Emulator", "Complete " , 300, text2Y, "white");
-
+        GameApp.drawTextCentered("Pixel_Emulator", "Press SPACE \n to continue", 300, getWorldHeight() / 2 - 100, "white");
 
         GameApp.endSpriteRendering();
 
@@ -65,6 +63,8 @@ public class RoundCompleteScreen extends ScalableGameScreen {
 
     @Override
     public void hide() {
+        GameApp.disposeTexture("GameOverBackground");
+        GameApp.disposeFont("Pixel_Emulator");
     }
 
 }
