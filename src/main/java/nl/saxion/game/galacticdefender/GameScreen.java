@@ -54,7 +54,6 @@ public class GameScreen extends ScalableGameScreen {
         player.y = 0;
         player.lives = 49;
 
-
     }
         @Override
         public void render(float delta) {
