@@ -17,6 +17,7 @@ public class GameScreen extends ScalableGameScreen {
     public static final int ENEMY_BULLET_SIZE = 50;
     public static final int PLAYER_BULLET_SIZE = 30;
     public static int SCORE = 0;
+    public static int coin_display = 0;
     public static int STAGE = 0;
     ArrayList<String> environments =  new ArrayList<>(Arrays.asList("basic", "desert", "fire", "ice"));
     float timeElapsed = 0;
@@ -25,12 +26,14 @@ public class GameScreen extends ScalableGameScreen {
     float enemy_bullet_timer = 0;
     float alien_timer = 0;
     float asteroid_timer = 0;
+    float coin_timer = 0;
     SpaceShip player;
     ArrayList<Bullet> player_bullets = new ArrayList<>();
     ArrayList<Bullet> enemy_bullets = new ArrayList<>();
 
     ArrayList<Alien> aliens = new ArrayList<>();
     ArrayList<Asteroid> asteroids = new ArrayList<>();
+    ArrayList<Coin> coins = new ArrayList<Coin>();
 
     public GameScreen() {
         super(500, 800);
@@ -48,6 +51,7 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 16);
         GameApp.addTexture("enemy_shot", "textures/Other_graphics/BulletFire.png");
         GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
+        GameApp.addTexture("coin","textures/basic_textures/coin.png");
 
         player = new SpaceShip();
         player.x = getWorldWidth() / 2;
@@ -64,6 +68,7 @@ public class GameScreen extends ScalableGameScreen {
             enemy_bullet_timer += delta;
             alien_timer += delta;
             asteroid_timer += delta;
+            coin_timer += delta;
             SCORE += (int)(delta * 60);
 
             if (SCORE > 500 + STAGE * 500) {
@@ -99,6 +104,7 @@ public class GameScreen extends ScalableGameScreen {
             }
 
             GameApp.drawText("Pixel_Emulator", "score: " + SCORE,  getWorldWidth() - 140, getWorldHeight() - 35, "white");
+            GameApp.drawText("Pixel_Emulator", "coins: " + coin_display,  getWorldWidth() - 140, getWorldHeight() - 65, "white");
             GameApp.drawTexture("spaceship", player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
             GameApp.endSpriteRendering();
 
@@ -160,6 +166,14 @@ public class GameScreen extends ScalableGameScreen {
                     }
             }
         }
+            for(Coin coin:coins){
+                if(GameApp.rectOverlap(coin.x,coin.y,80,80,player.x,player.y,SPACESHIP_SIZE,SPACESHIP_SIZE)&&
+                        coin.active){
+                    coin.active = false;
+                    coin_display ++;
+                }
+            }
+
 
         for (Bullet player_bullet: player_bullets) {
             if (player_bullet.active) {
@@ -216,6 +230,15 @@ public class GameScreen extends ScalableGameScreen {
 
 
         }
+        if(coin_timer > 1){
+            coin_timer = 0;
+            Coin newCoin = new Coin();
+            newCoin.x = GameApp.randomInt(0, (int) (getWorldWidth()-80));
+            newCoin.y = ( (int) getWorldHeight());
+            newCoin.speed = 10;
+            newCoin.active = true;
+            coins.add(newCoin);
+        }
     }
 
     void drawEntities(float delta) {
@@ -252,5 +275,14 @@ public class GameScreen extends ScalableGameScreen {
             currAsteroid.y -= delta * BG_SPEED;
 
         }
+        for(Coin currCoin:coins){
+            if(currCoin.active){
+                currCoin.y -= delta * BG_SPEED;
+
+            GameApp.drawTexture("coin",currCoin.x,currCoin.y,40,40);
+           if(currCoin.y < -40){
+               currCoin.active = false;
+           }
+        }}
     }
 }
