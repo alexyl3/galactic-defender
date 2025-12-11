@@ -40,6 +40,8 @@ public class GameOverScreen extends ScalableGameScreen {
         GameApp.endSpriteRendering();
 
         if (GameApp.isKeyPressed(Input.Keys.SPACE)){
+            GameScreen.SCORE = 0;
+            GameScreen.STAGE = 0;
             GameApp.switchScreen("MainMenuScreen");
         }
 
