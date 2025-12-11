@@ -13,8 +13,8 @@ public class GameOverScreen extends ScalableGameScreen {
     public void show() {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
         GameApp.addTexture("GameOverBackground", "textures/Other_Backgrounds/GameOverBackground.png");
-        GameApp.addParticleEffect("flame", "textures/flame-particle/flame.p");
-        long effectId = GameApp.spawnParticleEffect("flame", 450, 400);
+//        GameApp.addParticleEffect("flame", "textures/flame-particle/flame.p");
+//        long effectId = GameApp.spawnParticleEffect("flame", 450, 400);
         GameApp.debug(GameScreen.SCORE);
     }
 
@@ -34,7 +34,7 @@ public class GameOverScreen extends ScalableGameScreen {
         GameApp.drawText(title,"GAME OVER",textX1,textY1,"white");
         GameApp.drawText(title,"Press space to go back",textX1-130,textY1-200,"white");
         GameApp.drawText(title,"to the main menu",textX1-90,textY1-250,"white");
-        GameApp.renderParticleEffects();
+//        GameApp.renderParticleEffects();
 
 
         GameApp.endSpriteRendering();
