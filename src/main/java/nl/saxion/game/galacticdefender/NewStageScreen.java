@@ -47,7 +47,7 @@ public class NewStageScreen extends ScalableGameScreen {
         GameApp.clearScreen();
         GameApp.startSpriteRendering();
         GameApp.drawTexture("GameOverBackground",0,0,getWorldWidth(),getWorldHeight());
-        GameApp.drawTextCentered("Pixel_Emulator", "Round " , 300,text1Y, "white");
+        GameApp.drawTextCentered("Pixel_Emulator", "Round " + GameScreen.STAGE , 300,text1Y, "white");
         GameApp.drawTextCentered("Pixel_Emulator", "Complete " , 300, text2Y, "white");
         GameApp.drawTextCentered("Pixel_Emulator", "Press SPACE \n to continue", 300, getWorldHeight() / 2 - 100, "white");
 

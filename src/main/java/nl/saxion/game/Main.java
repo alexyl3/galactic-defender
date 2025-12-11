@@ -10,6 +10,7 @@ public class Main {
         GameApp.addScreen("GameScreen", new GameScreen());
         GameApp.addScreen("PauseScreen", new PauseScreen());
         GameApp.addScreen("GameOverScreen", new GameOverScreen());
+        GameApp.addScreen("ManualScreen", new ManualScreen());
         GameApp.addScreen("NewStageScreen", new NewStageScreen());
 
         // Start game loop and show main menu screen
