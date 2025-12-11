@@ -43,7 +43,6 @@ public class GameOverScreen extends ScalableGameScreen {
             GameScreen.SCORE = 0;
             GameScreen.STAGE = 0;
             GameApp.switchScreen("MainMenuScreen");
-
         }
 
     }
