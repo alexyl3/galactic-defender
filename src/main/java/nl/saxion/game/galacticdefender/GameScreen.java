@@ -27,6 +27,9 @@ public class GameScreen extends ScalableGameScreen {
     float alien_timer = 0;
     float asteroid_timer = 0;
     float booster_timer = 0;
+    float shield_activated_timer = 0;
+    float bullet_activated_timer = 0;
+    Booster booster_activated = new Booster();
     SpaceShip player;
     ArrayList<Bullet> player_bullets = new ArrayList<>();
     ArrayList<Bullet> enemy_bullets = new ArrayList<>();
@@ -55,6 +58,7 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addTexture("bullet_booster", "textures/Other_graphics/bullet_booster.png");
         GameApp.addTexture("shield_booster", "textures/Other_graphics/shield_booster.png");
         GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
+        GameApp.addTexture("shield", "textures/Other_graphics/shield.png");
 
         player = new SpaceShip();
         player.x = getWorldWidth() / 2;
@@ -72,6 +76,8 @@ public class GameScreen extends ScalableGameScreen {
             alien_timer += delta;
             asteroid_timer += delta;
             booster_timer += delta;
+            shield_activated_timer -= delta;
+            bullet_activated_timer -= delta;
             SCORE += (int)(delta * 60);
 
             if (SCORE > 500 + STAGE * 500) {
@@ -94,7 +100,6 @@ public class GameScreen extends ScalableGameScreen {
 
             handleCollision();
 
-
             // Draw elements
             GameApp.clearScreen();
             GameApp.startSpriteRendering();
@@ -109,6 +114,10 @@ public class GameScreen extends ScalableGameScreen {
 
             GameApp.drawText("Pixel_Emulator", "score: " + SCORE,  getWorldWidth() - 140, getWorldHeight() - 35, "white");
             GameApp.drawTexture("spaceship", player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
+            if (booster_activated.type.equals("shield_booster") && shield_activated_timer > 0) {
+                GameApp.drawTexture("shield", player.x - 5, player.y - 5, SPACESHIP_SIZE + 10
+                        , SPACESHIP_SIZE + 10);
+            }
             GameApp.endSpriteRendering();
 
         }
@@ -125,11 +134,21 @@ public class GameScreen extends ScalableGameScreen {
             GameApp.disposeTexture("bullet_booster");
             GameApp.disposeFont("Pixel_Emulator");
             GameApp.disposeTexture("heart");
+            GameApp.disposeTexture("shield");
         }
 
     public void handlePlayerInput(float delta) {
         if (GameApp.isKeyJustPressed(Input.Keys.P)) {
             GameApp.switchScreen("PauseScreen");
+        }
+        if (GameApp.isKeyJustPressed(Input.Keys.E) && shield_activated_timer <= 0 && bullet_activated_timer <= 0) {
+            booster_activated = collected_boosters.getLast();
+            collected_boosters.removeLast();
+            if (booster_activated.type.equals("shield_booster")) {
+                shield_activated_timer = 5;
+            } else {
+                bullet_activated_timer = 5;
+            }
         }
         if (GameApp.isKeyPressed(Input.Keys.LEFT) || GameApp.isKeyPressed(Input.Keys.A)) {
             player.x -= SPACESHIP_SPEED * delta;
@@ -144,7 +163,9 @@ public class GameScreen extends ScalableGameScreen {
         for (Alien enemy : aliens) {
             if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE) && enemy.alive) {
                 enemy.alive = false;
-                player.lives -= 5;
+                if (shield_activated_timer <= 0) {
+                    player.lives -= 5;
+                }
                 if (player.lives <= 0) {
                     startGame();
                     GameApp.switchScreen("GameOverScreen");
@@ -156,7 +177,9 @@ public class GameScreen extends ScalableGameScreen {
             if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, enemy_bullet.x, enemy_bullet.y, ENEMY_BULLET_SIZE, ENEMY_BULLET_SIZE) &&
                     enemy_bullet.active) {
                 enemy_bullet.active = false;
-                player.lives -= 1;
+                if (shield_activated_timer <= 0) {
+                    player.lives -= 1;
+                }
                 if (player.lives <= 0) {
                     startGame();
                     GameApp.switchScreen("GameOverScreen");
@@ -173,7 +196,9 @@ public class GameScreen extends ScalableGameScreen {
         for(Asteroid asteroid:asteroids){
             if(GameApp.rectOverlap(asteroid.x,asteroid.y,80,80,player.x,player.y,SPACESHIP_SIZE,SPACESHIP_SIZE)&& asteroid.active){
                 asteroid.active = false;
-                player.lives-=3;
+                if (shield_activated_timer <= 0) {
+                    player.lives -= 3;
+                }
                 if (player.lives <= 0) {
                     startGame();
                     GameApp.switchScreen("GameOverScreen");
@@ -240,7 +265,6 @@ public class GameScreen extends ScalableGameScreen {
             booster_timer = 0;
             Booster newBooster = new Booster();
             newBooster.type = GameApp.random(Arrays.asList("shield_booster", "bullet_booster"));
-            GameApp.debug(newBooster.type);
             newBooster.x = GameApp.random(BOOSTER_SIZE + 50, GameApp.getWorldWidth() - BOOSTER_SIZE - 50);
             newBooster.y = GameApp.random(getWorldHeight(), getWorldHeight() + 2 * BOOSTER_SIZE);
             boosters.add(newBooster);
@@ -313,5 +337,8 @@ public class GameScreen extends ScalableGameScreen {
 
         collected_boosters = new ArrayList<>();
         boosters = new ArrayList<>();
+
+        shield_activated_timer = 0;
+        bullet_activated_timer = 0;
     }
 }
