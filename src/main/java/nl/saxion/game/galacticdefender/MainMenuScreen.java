@@ -4,8 +4,6 @@ import com.badlogic.gdx.Input;
 import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
-import java.awt.*;
-
 public class MainMenuScreen extends ScalableGameScreen {
     public MainMenuScreen() {
         super(500, 800);
@@ -30,13 +28,12 @@ public class MainMenuScreen extends ScalableGameScreen {
         if (GameApp.isKeyJustPressed(Input.Keys.ENTER)) {
             GameApp.switchScreen("GameScreen");
         }
+
         float mouseX = getMouseX();
         float mouseY = getMouseY();
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-50,getWorldHeight()-50,GameApp.getTextureWidth("Button"),GameApp.getTextureHeight("Button"))){
             GameApp.switchScreen("ManualScreen");
         }
-
-
         // Render the main menu
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
@@ -51,8 +48,8 @@ public class MainMenuScreen extends ScalableGameScreen {
         String title = "Pixel_Emulator";
         float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
-        GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
         GameApp.drawTexture("Button",getWorldWidth()-50,getWorldHeight()-50);
+        GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
         GameApp.endSpriteRendering();
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
             GameApp.switchScreen("YourGameScreen");}

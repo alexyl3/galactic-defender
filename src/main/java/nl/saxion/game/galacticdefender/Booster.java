@@ -1,10 +1,9 @@
 package nl.saxion.game.galacticdefender;
 
-public class Alien {
+public class Booster {
     float x;
     float y;
-    int health = 10;
     String type;
-    int size;
-    boolean alive = true;
+    boolean active = true;
+    boolean used = false;
 }
