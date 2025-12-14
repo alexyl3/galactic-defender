@@ -33,7 +33,7 @@ public class GameScreen extends ScalableGameScreen {
 
     ArrayList<Alien> aliens = new ArrayList<>();
     ArrayList<Asteroid> asteroids = new ArrayList<>();
-    ArrayList<Coin> coins = new ArrayList<Coin>();
+    ArrayList<Coin> coins = new ArrayList<>();
 
     public GameScreen() {
         super(500, 800);
