@@ -19,6 +19,10 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.addTexture("asteriod", "textures/Other_graphics/asteriod.png");
         GameApp.addTexture("Button","textures/Other_graphics/Button.png");
         GameApp.addTexture("Customise_button","textures/other_graphics/customise_button.png");
+
+        GameApp.addMusic("menu_music", "audio/game_loop_music.mp3");
+        GameApp.playMusic("menu_music", true, 0.7f);
+
     }
 
     @Override
@@ -72,5 +76,6 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.disposeTexture("play_button");
         GameApp.disposeTexture("Rectangle_box");
         GameApp.disposeTexture("Button");
+        GameApp.disposeMusic("menu_music");
     }
 }
