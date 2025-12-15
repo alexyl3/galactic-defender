@@ -22,8 +22,10 @@ public class GameScreen extends ScalableGameScreen {
     public static int STAGE = 0;
     ArrayList<String> environments =  new ArrayList<>(Arrays.asList("basic", "fire", "ice", "desert"
     ));
+    ArrayList<Integer> available = new ArrayList<>(Arrays.asList(0, 50, 120, 100, 150, 170, 200, 230, 250, 300, 320, 350, 400));
     float timeElapsed = 0;
     float spaceOffset;
+    float positions_timer = 0;
     float player_bullet_timer = 0;
     float enemy_bullet_timer = 0;
     float alien_timer = 0;
@@ -79,6 +81,7 @@ public class GameScreen extends ScalableGameScreen {
             timeElapsed += delta;
             player_bullet_timer += delta;
             enemy_bullet_timer += delta;
+            positions_timer += delta;
             alien_timer += delta;
             asteroid_timer += delta;
             booster_timer += delta;
@@ -93,9 +96,14 @@ public class GameScreen extends ScalableGameScreen {
             }
 
             if (player.lives <= 0) {
+                startGame();
                 GameApp.switchScreen("GameOverScreen");
             }
 
+            if (positions_timer > 0.5) {
+                available = new ArrayList<>(Arrays.asList(0, 50, 100, 150, 200, 250, 300, 350, 400));
+                positions_timer = 0;
+            }
             handlePlayerInput(delta);
             createNewEntities();
 
@@ -174,6 +182,7 @@ public class GameScreen extends ScalableGameScreen {
                     player.lives -= 5;
                 }
                 if (player.lives <= 0) {
+                    startGame();
                     GameApp.switchScreen("GameOverScreen");
                 }
             }
@@ -210,6 +219,7 @@ public class GameScreen extends ScalableGameScreen {
                 asteroid.active = false;
                 player.lives -= 3;
                 if (player.lives <= 0) {
+                    startGame();
                     GameApp.switchScreen("GameOverScreen");
                 }
             }
@@ -266,7 +276,9 @@ public class GameScreen extends ScalableGameScreen {
             alien_timer = 0;
             Alien alien = new Alien();
             alien.size = GameApp.randomInt(10, 30);
-            alien.x = GameApp.random(0, getWorldWidth() - ALIEN_SIZE);
+            int selected = GameApp.randomInt(0, available.size());
+            alien.x = available.get(selected);
+            available.remove(selected);
             alien.y = getWorldHeight();
             aliens.add(alien);
         }
@@ -283,33 +295,39 @@ public class GameScreen extends ScalableGameScreen {
                 }
             }
         }
-        if (asteroid_timer > 0.5){
+        if (asteroid_timer > 0.5) {
             asteroid_timer = 0;
             Asteroid newAsteroid = new Asteroid();
-            newAsteroid.x = GameApp.randomInt(0,800);
-            newAsteroid.y = GameApp.randomInt(800,1000);
+            int selected = GameApp.randomInt(0, available.size());
+            newAsteroid.x = available.get(selected);
+            available.remove(selected);
+            newAsteroid.y = GameApp.randomInt(800, 1000);
             newAsteroid.speed = 6;
             newAsteroid.active = true;
             asteroids.add(newAsteroid);
-
+        }
         if (booster_timer > 3) {
             booster_timer = 0;
             Booster newBooster = new Booster();
             newBooster.type = GameApp.random(Arrays.asList("shield_booster", "bullet_booster", "health_booster"));
-            newBooster.x = GameApp.random(BOOSTER_SIZE + 50, GameApp.getWorldWidth() - BOOSTER_SIZE - 50);
+            int selected = GameApp.randomInt(0, available.size());
+            newBooster.x = available.get(selected);
+            available.remove(selected);
             newBooster.y = GameApp.random(getWorldHeight(), getWorldHeight() + 2 * BOOSTER_SIZE);
             boosters.add(newBooster);
         }
         if(coin_timer > 1){
             coin_timer = 0;
             Coin newCoin = new Coin();
-            newCoin.x = GameApp.randomInt(0, (int) (getWorldWidth()-80));
+            int selected = GameApp.randomInt(0, available.size());
+            newCoin.x = available.get(selected);
+            available.remove(selected);
             newCoin.y = ( (int) getWorldHeight());
             newCoin.speed = 10;
             newCoin.active = true;
             coins.add(newCoin);
         }
-    }}
+    }
 
     void drawEntities(float delta) {
         for (Alien currAlien : aliens) {
@@ -377,6 +395,8 @@ public class GameScreen extends ScalableGameScreen {
         alien_timer = 0;
         asteroid_timer = 0;
         booster_timer = 0;
+        available = new ArrayList<>(Arrays.asList(0, 50, 120, 100, 150, 170, 200, 230, 250, 300, 320, 350, 400));
+        positions_timer = 0;
         player = new SpaceShip();
         player_bullets = new ArrayList<>();
         enemy_bullets = new ArrayList<>();
