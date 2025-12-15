@@ -34,6 +34,10 @@ public class MainMenuScreen extends ScalableGameScreen {
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-50,getWorldHeight()-50,GameApp.getTextureWidth("Button"),GameApp.getTextureHeight("Button"))){
             GameApp.switchScreen("ManualScreen");
         }
+        if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-10,getWorldHeight()-10,GameApp.getTextureWidth("Button"),GameApp.getTextureHeight("Button"))){
+            GameApp.switchScreen("CustomizationScreen");
+        }
+
         // Render the main menu
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
