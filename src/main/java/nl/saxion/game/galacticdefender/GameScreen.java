@@ -61,7 +61,7 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
         GameApp.addTexture("bullet_booster", "textures/Other_graphics/bullet_booster.png");
         GameApp.addTexture("shield_booster", "textures/Other_graphics/shield_booster.png");
-        GameApp.addTexture("shield", "textures/Other_graphics/shield.png");
+        GameApp.addTexture("shield", "textures/Other_graphics/shield_booster.png");
         GameApp.addTexture("coin","textures/basic_textures/coin.png");
 
         player = new SpaceShip();
