@@ -12,6 +12,7 @@ public class CustomizationScreen extends ScalableGameScreen {
     @Override
     public void show() {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
+        GameApp.addTexture("customization_background","textures/Other_Backgrounds/customization_background.jpg");
 
 
     }
@@ -24,6 +25,7 @@ public class CustomizationScreen extends ScalableGameScreen {
         GameApp.clearScreen();
         GameApp.startSpriteRendering();
         GameApp.drawText("Pixel_Emulator","Customization Screen",90,700,"white");
+        GameApp.drawTexture("customization_background",0,0,getWorldWidth(),getWorldHeight());
         GameApp.endSpriteRendering();
     }
 
