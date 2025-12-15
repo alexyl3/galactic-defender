@@ -16,6 +16,7 @@ public class GameScreen extends ScalableGameScreen {
     public static final int ALIEN_SIZE = 120;
     public static final int ENEMY_BULLET_SIZE = 50;
     public static final int PLAYER_BULLET_SIZE = 30;
+    public static final int BOOSTER_SIZE = 30;
     public static int SCORE = 0;
     public static int coin_display = 0;
     public static int STAGE = 0;
@@ -30,6 +31,10 @@ public class GameScreen extends ScalableGameScreen {
     float alien_timer = 0;
     float asteroid_timer = 0;
     float coin_timer = 0;
+    float booster_timer = 0;
+    float shield_activated_timer = 0;
+    float bullet_activated_timer = 0;
+    Booster booster_activated = new Booster();
     SpaceShip player;
     ArrayList<Bullet> player_bullets = new ArrayList<>();
     ArrayList<Bullet> enemy_bullets = new ArrayList<>();
@@ -37,6 +42,10 @@ public class GameScreen extends ScalableGameScreen {
     ArrayList<Alien> aliens = new ArrayList<>();
     ArrayList<Asteroid> asteroids = new ArrayList<>();
     ArrayList<Coin> coins = new ArrayList<>();
+
+    ArrayList<Booster> collected_boosters = new ArrayList<>();
+    ArrayList<Booster> boosters = new ArrayList<>();
+
 
     public GameScreen() {
         super(500, 800);
@@ -178,9 +187,10 @@ public class GameScreen extends ScalableGameScreen {
         }
             for(Coin coin:coins){
                 if(GameApp.rectOverlap(coin.x,coin.y,80,80,player.x,player.y,SPACESHIP_SIZE,SPACESHIP_SIZE)&&
-                        coin.active){
+                        coin.active) {
                     coin.active = false;
-                    coin_display ++;
+                    coin_display++;
+                }
 
         for (Asteroid asteroid : asteroids) {
             if (GameApp.rectOverlap(asteroid.x, asteroid.y, 80, 80, player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE) &&
@@ -191,6 +201,7 @@ public class GameScreen extends ScalableGameScreen {
                     startGame();
                     GameApp.switchScreen("GameOverScreen");
                 }
+            }}
             }
 
 
@@ -207,6 +218,7 @@ public class GameScreen extends ScalableGameScreen {
                 }
             }
         }}
+
     public void createNewEntities() {
         if (player_bullet_timer >= 0.15) {
             Bullet newBullet = new Bullet();
@@ -250,9 +262,8 @@ public class GameScreen extends ScalableGameScreen {
             newAsteroid.speed = 6;
             newAsteroid.active = true;
             asteroids.add(newAsteroid);
-
-
         }
+
         if (booster_timer > 3) {
             booster_timer = 0;
             Booster newBooster = new Booster();
