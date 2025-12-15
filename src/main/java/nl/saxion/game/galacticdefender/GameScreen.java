@@ -61,7 +61,8 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
         GameApp.addTexture("bullet_booster", "textures/Other_graphics/bullet_booster.png");
         GameApp.addTexture("shield_booster", "textures/Other_graphics/shield_booster.png");
-        GameApp.addTexture("shield", "textures/Other_graphics/shield_booster.png");
+        GameApp.addTexture("health_booster", "textures/Other_graphics/health_booster.png");
+        GameApp.addTexture("shield", "textures/Other_graphics/shield.png");
         GameApp.addTexture("coin","textures/basic_textures/coin.png");
 
         player = new SpaceShip();
@@ -194,7 +195,11 @@ public class GameScreen extends ScalableGameScreen {
         for (Booster booster : boosters) {
             if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, booster.x, booster.y, BOOSTER_SIZE, BOOSTER_SIZE) && booster.active) {
                 booster.active = false;
-                collected_boosters.add(booster);
+                if (booster.type.equals("health_booster")) {
+                    player.lives += 10;
+                } else {
+                    collected_boosters.add(booster);
+                }
             }
         }
 
@@ -289,7 +294,7 @@ public class GameScreen extends ScalableGameScreen {
         if (booster_timer > 3) {
             booster_timer = 0;
             Booster newBooster = new Booster();
-            newBooster.type = GameApp.random(Arrays.asList("shield_booster", "bullet_booster"));
+            newBooster.type = GameApp.random(Arrays.asList("shield_booster", "bullet_booster", "health_booster"));
             newBooster.x = GameApp.random(BOOSTER_SIZE + 50, GameApp.getWorldWidth() - BOOSTER_SIZE - 50);
             newBooster.y = GameApp.random(getWorldHeight(), getWorldHeight() + 2 * BOOSTER_SIZE);
             boosters.add(newBooster);
