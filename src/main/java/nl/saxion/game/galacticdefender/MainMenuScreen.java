@@ -16,11 +16,9 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
         GameApp.addTexture("play_button", "textures/Other_graphics/play_button.png");
         GameApp.addTexture("Rectangle_box", "textures/Other_graphics/Rectangle_box.png");
-        GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
+        GameApp.addTexture("asteriod", "textures/Other_graphics/asteriod.png");
         GameApp.addTexture("Button","textures/Other_graphics/Button.png");
-
-        GameApp.addMusic("menu_music", "audio/game_loop_music.mp3");
-        GameApp.playMusic("menu_music", true, 0.4f);
+        GameApp.addTexture("Customise_button","textures/other_graphics/customise_button.png");
     }
 
     @Override
@@ -37,6 +35,10 @@ public class MainMenuScreen extends ScalableGameScreen {
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-50,getWorldHeight()-50,GameApp.getTextureWidth("Button"),GameApp.getTextureHeight("Button"))){
             GameApp.switchScreen("ManualScreen");
         }
+        if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-500,getWorldHeight()-100,GameApp.getTextureWidth("customise_button"),GameApp.getTextureHeight("customise_button"))){
+            GameApp.switchScreen("CustomizationScreen");
+        }
+
         // Render the main menu
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
@@ -52,6 +54,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
         GameApp.drawTexture("Button",getWorldWidth()-50,getWorldHeight()-50);
+        GameApp.drawTexture("customise_button",getWorldWidth()-500,getWorldHeight()-100);
         GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
         GameApp.endSpriteRendering();
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
@@ -69,7 +72,5 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.disposeTexture("play_button");
         GameApp.disposeTexture("Rectangle_box");
         GameApp.disposeTexture("Button");
-
-        GameApp.disposeMusic("menu_music");
     }
 }
