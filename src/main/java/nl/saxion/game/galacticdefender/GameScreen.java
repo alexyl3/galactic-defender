@@ -19,6 +19,7 @@ public class GameScreen extends ScalableGameScreen {
     public static final int PLAYER_BULLET_SIZE = 30;
     public static final int BOOSTER_SIZE = 30;
     public static int SCORE = 0;
+    public static int activeSpaceship = 0;
     public static int coin_display = 0;
     public static int STAGE = 0;
     ArrayList<String> environments =  new ArrayList<>(Arrays.asList("basic", "fire", "ice", "desert"
@@ -55,7 +56,7 @@ public class GameScreen extends ScalableGameScreen {
     public void show() {
         spaceOffset = 0;
         GameApp.addTexture("space-bg", "textures/" + environments.get(STAGE) + "_textures/space.png");
-        GameApp.addTexture("spaceship", "textures/" + environments.get(STAGE) + "_textures/spaceship.png");
+        GameApp.addTexture("spaceship", "textures/shop_textures/" + activeSpaceship + "_spaceship.png");
         GameApp.addTexture("alien", "textures/" + environments.get(STAGE) + "_textures/alien.png");
 
         GameApp.addTexture("player_shot", "textures/Other_graphics/shot.png");
