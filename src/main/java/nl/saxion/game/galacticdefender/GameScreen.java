@@ -6,6 +6,7 @@ import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class GameScreen extends ScalableGameScreen {
     public static final int BG_SPEED = 700;
@@ -65,7 +66,7 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addTexture("bullet_booster", "textures/Other_graphics/bullet_booster.png");
         GameApp.addTexture("shield_booster", "textures/Other_graphics/shield_booster.png");
         GameApp.addTexture("health_booster", "textures/Other_graphics/health_booster.png");
-        GameApp.addTexture("shield", "textures/Other_graphics/shield.png");
+        GameApp.addTexture("shield", "textures/Other_graphics/spr_shield.png");
         GameApp.addTexture("coin","textures/basic_textures/coin.png");
 
         GameApp.addSound("laser", "audio/Laser.wav");
@@ -241,6 +242,7 @@ public class GameScreen extends ScalableGameScreen {
         for (Coin coin : coins) {
             if (GameApp.rectOverlap(coin.x, coin.y, 80, 80, player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE) &&
                     coin.active) {
+                GameApp.playSound("booster_pickup");
                 coin.active = false;
                 coin_display++;
             }
@@ -403,6 +405,11 @@ public class GameScreen extends ScalableGameScreen {
     }
 
     public void startGame() {
+        try {
+            TimeUnit.MILLISECONDS.sleep(300);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
         collected_boosters = new ArrayList<>();
         player_bullet_timer = 0;
         enemy_bullet_timer = 0;

@@ -13,8 +13,8 @@ public class GameOverScreen extends ScalableGameScreen {
     public void show() {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
         GameApp.addTexture("GameOverBackground", "textures/Other_Backgrounds/GameOverBackground.png");
-        GameApp.addParticleEffect("flame", "textures/flame-particle/flame.p");
-        long effectId = GameApp.spawnParticleEffect("flame", 450, 400);
+//        GameApp.addParticleEffect("flame", "textures/flame-particle/flame.p");
+//        long effectId = GameApp.spawnParticleEffect("flame", 450, 400);
         GameApp.debug(GameScreen.SCORE);
     }
 
