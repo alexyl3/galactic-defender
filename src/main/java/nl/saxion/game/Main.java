@@ -13,6 +13,7 @@ public class Main {
         GameApp.addScreen("ManualScreen", new ManualScreen());
         GameApp.addScreen("NewStageScreen", new NewStageScreen());
         GameApp.addScreen("CustomizationScreen", new CustomizationScreen());
+        GameApp.addScreen("ShopScreen", new ShopScreen());
 
         // Start game loop and show main menu screen
         GameApp.start("Galactic defender", 500, 800, 60, false, "MainMenuScreen");

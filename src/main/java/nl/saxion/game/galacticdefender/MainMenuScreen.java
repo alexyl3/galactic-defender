@@ -20,6 +20,12 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.addTexture("Button","textures/Other_graphics/Button.png");
         GameApp.addTexture("Customise_button","textures/other_graphics/customise_button.png");
         GameApp.addFont("Game_Paused","fonts/Game_Paused.otf",32);
+        GameApp.addTexture("Customise_button","textures/Other_graphics/customise_button-removebg-preview.png");
+        GameApp.addTexture("shop_button","textures/other_graphics/shop_button.png");
+
+        GameApp.addMusic("menu_music", "audio/game_loop_music.mp3");
+        GameApp.playMusic("menu_music", true, 0.7f);
+
     }
 
     @Override
@@ -39,6 +45,9 @@ public class MainMenuScreen extends ScalableGameScreen {
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-500,getWorldHeight()-100,GameApp.getTextureWidth("customise_button"),GameApp.getTextureHeight("customise_button"))){
             GameApp.switchScreen("CustomizationScreen");
         }
+        if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-510,getWorldHeight()-180,GameApp.getTextureWidth("shop_button"),GameApp.getTextureHeight("shop_button"))){
+            GameApp.switchScreen("ShopScreen");
+        }
 
         // Render the main menu
         GameApp.clearScreen("black");
@@ -56,6 +65,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         float textY = getWorldHeight()/2f+20;
         GameApp.drawTexture("Button",getWorldWidth()-50,getWorldHeight()-50);
         GameApp.drawTexture("customise_button",getWorldWidth()-500,getWorldHeight()-100);
+        GameApp.drawTexture("shop_button",getWorldWidth()-510,getWorldHeight()-180);
         GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
         GameApp.endSpriteRendering();
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
@@ -73,5 +83,8 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.disposeTexture("play_button");
         GameApp.disposeTexture("Rectangle_box");
         GameApp.disposeTexture("Button");
+        GameApp.disposeTexture("shop_button");
+        GameApp.disposeTexture("Customise_button");
+        GameApp.disposeMusic("menu_music");
     }
 }
