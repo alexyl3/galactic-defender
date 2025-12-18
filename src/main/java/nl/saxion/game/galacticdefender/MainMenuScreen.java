@@ -19,6 +19,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.addTexture("asteriod", "textures/Other_graphics/asteriod.png");
         GameApp.addTexture("Button","textures/Other_graphics/Button.png");
         GameApp.addTexture("Customise_button","textures/other_graphics/customise_button.png");
+        GameApp.addFont("Game_Paused","fonts/Game_Paused.otf",32);
     }
 
     @Override
@@ -43,14 +44,14 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
         GameApp.drawTexture("background",0,0, getWorldWidth(), getWorldHeight());
-        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth(),100);
+        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth()+50,100);
 
         float btnX = getWorldWidth() / 2f - 40;   // button width ~160
         float btnY = getWorldHeight() / 2f - 120;  // lower
 
         GameApp.drawTexture("play_button", btnX, btnY, 120, 80);
 
-        String title = "Pixel_Emulator";
+        String title = "Game_Paused";
         float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
         GameApp.drawTexture("Button",getWorldWidth()-50,getWorldHeight()-50);
