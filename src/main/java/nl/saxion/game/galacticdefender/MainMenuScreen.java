@@ -5,6 +5,9 @@ import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 public class MainMenuScreen extends ScalableGameScreen {
+    public static String username = "";
+    String currentText = "";
+    float cursorBlink = 0;
     public MainMenuScreen() {
         super(500, 800);
     }
@@ -12,7 +15,7 @@ public class MainMenuScreen extends ScalableGameScreen {
     @Override
     public void show() {
         GameApp.addFont("basic", "fonts/basic.ttf", 100);
-        GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 32);
+        GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 20);
         GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
         GameApp.addTexture("play_button", "textures/Other_graphics/play_button.png");
         GameApp.addTexture("Rectangle_box", "textures/Other_graphics/Rectangle_box.png");
@@ -31,11 +34,7 @@ public class MainMenuScreen extends ScalableGameScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-
-        // When the user presses enter, go to the next screen
-        if (GameApp.isKeyJustPressed(Input.Keys.ENTER)) {
-            GameApp.switchScreen("GameScreen");
-        }
+        cursorBlink += delta;
 
         float mouseX = getMouseX();
         float mouseY = getMouseY();
@@ -48,6 +47,9 @@ public class MainMenuScreen extends ScalableGameScreen {
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-510,getWorldHeight()-180,GameApp.getTextureWidth("shop_button"),GameApp.getTextureHeight("shop_button"))){
             GameApp.switchScreen("ShopScreen");
         }
+        if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInCircle(mouseX,mouseY, 260, 330, 60)){
+            GameApp.switchScreen("GameScreen");
+        }
 
         // Render the main menu
         GameApp.clearScreen("black");
@@ -55,10 +57,10 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.drawTexture("background",0,0, getWorldWidth(), getWorldHeight());
         GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth()+50,100);
 
-        float btnX = getWorldWidth() / 2f - 40;   // button width ~160
-        float btnY = getWorldHeight() / 2f - 120;  // lower
+        float btnX = getWorldWidth() / 2f - 50;   // button width ~160
+        float btnY = getWorldHeight() / 2f - 130;  // lower
 
-        GameApp.drawTexture("play_button", btnX, btnY, 120, 80);
+        GameApp.drawTexture("play_button", btnX, btnY, 120, 120);
 
         String title = "Game_Paused";
         float textX = getWorldWidth()/2f-300;
@@ -66,11 +68,17 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.drawTexture("Button",getWorldWidth()-50,getWorldHeight()-50);
         GameApp.drawTexture("customise_button",getWorldWidth()-500,getWorldHeight()-100);
         GameApp.drawTexture("shop_button",getWorldWidth()-510,getWorldHeight()-180);
-        GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
+        GameApp.drawText(title,"Galactic Defender",textX + 150,textY+10,"white");
+        GameApp.drawText("Pixel_Emulator", "Press ENTER to save", 50, textY - 230, "white");
+        if (cursorBlink < 0.5) {
+            GameApp.drawText("Pixel_Emulator", "Enter username: " + currentText + "|", 50, textY - 200, "white");
+        } else {
+            if (cursorBlink > 1) {
+                cursorBlink = 0;
+            }
+            GameApp.drawText("Pixel_Emulator", "Enter username: " + currentText, 50, textY - 200, "white");
+        }
         GameApp.endSpriteRendering();
-        if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
-            GameApp.switchScreen("YourGameScreen");}
-
 
     }
 
@@ -86,5 +94,21 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.disposeTexture("shop_button");
         GameApp.disposeTexture("Customise_button");
         GameApp.disposeMusic("menu_music");
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        if(character == '\b') { // Backspace
+            if(!currentText.isEmpty()) {
+                // Remove the last character
+                currentText = currentText.substring(0, currentText.length() - 1);
+            }
+        } else if(character == '\r' || character == '\n') {
+            username = currentText;
+        } else {
+            // Add the typed character
+            currentText += character;
+        }
+        return true;
     }
 }

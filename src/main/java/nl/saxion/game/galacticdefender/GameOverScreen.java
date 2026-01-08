@@ -3,8 +3,11 @@ import com.badlogic.gdx.Input;
 import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
-public class GameOverScreen extends ScalableGameScreen {
+import java.util.ArrayList;
 
+public class GameOverScreen extends ScalableGameScreen {
+    public static ArrayList<Integer> scores = new ArrayList<>();
+    public static ArrayList<Integer> users = new ArrayList<>();
     public GameOverScreen() {
         super(500, 800);
     }
@@ -34,7 +37,7 @@ public class GameOverScreen extends ScalableGameScreen {
         GameApp.drawText(title,"GAME OVER",textX1,textY1,"white");
         GameApp.drawText(title,"Press space to go back",textX1-130,textY1-200,"white");
         GameApp.drawText(title,"to the main menu",textX1-90,textY1-250,"white");
-        GameApp.drawText(title,"Press C to continue by spending 5 coins",textX1-160,textY1-300,"white");
+        GameApp.drawText(title,"Press C to continue \nby spending 5 coins",textX1-120,textY1-300,"white");
         GameApp.renderParticleEffects();
 
 
@@ -42,7 +45,9 @@ public class GameOverScreen extends ScalableGameScreen {
 
         if (GameApp.isKeyPressed(Input.Keys.SPACE)){
             GameScreen.SCORE = 0;
+
             GameScreen.STAGE = 0;
+            GameScreen.START_GAME = 1;
             GameApp.switchScreen("MainMenuScreen");
 
         }
