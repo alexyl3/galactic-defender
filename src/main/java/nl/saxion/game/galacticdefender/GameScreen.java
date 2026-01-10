@@ -14,7 +14,7 @@ public class GameScreen extends ScalableGameScreen {
     public static final int SPACESHIP_SIZE = 90;
     public static final int BULLET_SPEED = 500;
     public static final int HEART_SIZE = 50;
-    public static final int ALIEN_SIZE = 120;
+    public static final int ALIEN_SIZE = 100;
     public static final int ENEMY_BULLET_SIZE = 50;
     public static final int PLAYER_BULLET_SIZE = 30;
     public static final int BOOSTER_SIZE = 30;
@@ -58,7 +58,14 @@ public class GameScreen extends ScalableGameScreen {
         if (START_GAME == 1) {
             SCORE = 0;
             STAGE = 0;
+            START_GAME = 0;
             startGame();
+        }
+        if (STAGE == 0) {
+            player = new SpaceShip();
+            player.x = (getWorldWidth() - SPACESHIP_SIZE) / 2;
+            player.y = 0;
+            player.lives = 49;
         }
         spaceOffset = 0;
         GameApp.addTexture("space-bg", "textures/" + environments.get(STAGE) + "_textures/space.png");
@@ -69,7 +76,7 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addTexture("heart", "textures/Other_graphics/heart.png");
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 16);
         GameApp.addTexture("enemy_shot", "textures/Other_graphics/BulletFire.png");
-        GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
+        GameApp.addTexture("Asteroid", "textures/" + environments.get(STAGE) + "_textures/asteroid.png");
         GameApp.addTexture("bullet_booster", "textures/Other_graphics/bullet_booster.png");
         GameApp.addTexture("shield_booster", "textures/Other_graphics/shield_booster.png");
         GameApp.addTexture("health_booster", "textures/Other_graphics/health_booster.png");
@@ -82,11 +89,6 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addMusic("menu_music", "audio/game_loop_music.mp3");
         GameApp.addSound("asteroid_damage", "audio/asteroid_damage.wav");
         GameApp.playMusic("menu_music", true, 0.7f);
-
-        player = new SpaceShip();
-        player.x = (getWorldWidth() - SPACESHIP_SIZE) / 2;
-        player.y = 0;
-        player.lives = 49;
 
 
     }

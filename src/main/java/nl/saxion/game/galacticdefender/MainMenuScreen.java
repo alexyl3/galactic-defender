@@ -7,6 +7,8 @@ import nl.saxion.gameapp.screens.ScalableGameScreen;
 public class MainMenuScreen extends ScalableGameScreen {
     public static String username = "";
     String currentText = "";
+    boolean usernameSaved = false;
+    String usernameColor = "white";
     float cursorBlink = 0;
     public MainMenuScreen() {
         super(500, 800);
@@ -22,6 +24,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.addTexture("asteriod", "textures/Other_graphics/asteriod.png");
         GameApp.addTexture("Button","textures/Other_graphics/Button.png");
         GameApp.addTexture("Customise_button","textures/other_graphics/customise_button.png");
+        GameApp.addTexture("leaderboard_button","textures/other_graphics/leaderboard_button.png");
         GameApp.addFont("Game_Paused","fonts/Game_Paused.otf",32);
         GameApp.addTexture("Customise_button","textures/Other_graphics/customise_button-removebg-preview.png");
         GameApp.addTexture("shop_button","textures/other_graphics/shop_button.png");
@@ -40,6 +43,9 @@ public class MainMenuScreen extends ScalableGameScreen {
         float mouseY = getMouseY();
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-50,getWorldHeight()-50,GameApp.getTextureWidth("Button"),GameApp.getTextureHeight("Button"))){
             GameApp.switchScreen("ManualScreen");
+        }
+        if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-95,getWorldHeight()-50, 32, 32)){
+            GameApp.switchScreen("LeaderboardScreen");
         }
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-500,getWorldHeight()-100,GameApp.getTextureWidth("customise_button"),GameApp.getTextureHeight("customise_button"))){
             GameApp.switchScreen("CustomizationScreen");
@@ -66,17 +72,24 @@ public class MainMenuScreen extends ScalableGameScreen {
         float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
         GameApp.drawTexture("Button",getWorldWidth()-50,getWorldHeight()-50);
+        GameApp.drawTexture("leaderboard_button",getWorldWidth()-95,getWorldHeight()-50, 32, 32);
         GameApp.drawTexture("customise_button",getWorldWidth()-500,getWorldHeight()-100);
         GameApp.drawTexture("shop_button",getWorldWidth()-510,getWorldHeight()-180);
         GameApp.drawText(title,"Galactic Defender",textX + 150,textY+10,"white");
         GameApp.drawText("Pixel_Emulator", "Press ENTER to save", 50, textY - 230, "white");
+        GameApp.drawText("Pixel_Emulator", "Enter username: ", 50, textY - 200, "white");
+        if (usernameSaved) {
+            usernameColor = "yellow-400";
+        } else {
+            usernameColor = "white";
+        }
         if (cursorBlink < 0.5) {
-            GameApp.drawText("Pixel_Emulator", "Enter username: " + currentText + "|", 50, textY - 200, "white");
+            GameApp.drawText("Pixel_Emulator",  currentText + "|", 280, textY - 200, usernameColor);
         } else {
             if (cursorBlink > 1) {
                 cursorBlink = 0;
             }
-            GameApp.drawText("Pixel_Emulator", "Enter username: " + currentText, 50, textY - 200, "white");
+            GameApp.drawText("Pixel_Emulator", currentText, 280, textY - 200, usernameColor);
         }
         GameApp.endSpriteRendering();
 
@@ -94,6 +107,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.disposeTexture("shop_button");
         GameApp.disposeTexture("Customise_button");
         GameApp.disposeMusic("menu_music");
+        GameApp.disposeTexture("leaderboard_button");
     }
 
     @Override
@@ -101,12 +115,15 @@ public class MainMenuScreen extends ScalableGameScreen {
         if(character == '\b') { // Backspace
             if(!currentText.isEmpty()) {
                 // Remove the last character
+                usernameSaved = false;
                 currentText = currentText.substring(0, currentText.length() - 1);
             }
         } else if(character == '\r' || character == '\n') {
+            usernameSaved = true;
             username = currentText;
         } else {
             // Add the typed character
+            usernameSaved = false;
             currentText += character;
         }
         return true;

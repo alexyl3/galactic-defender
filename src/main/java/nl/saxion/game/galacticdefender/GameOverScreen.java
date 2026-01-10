@@ -6,8 +6,7 @@ import nl.saxion.gameapp.screens.ScalableGameScreen;
 import java.util.ArrayList;
 
 public class GameOverScreen extends ScalableGameScreen {
-    public static ArrayList<Integer> scores = new ArrayList<>();
-    public static ArrayList<Integer> users = new ArrayList<>();
+    public static ArrayList<Score> scores = new ArrayList<>();
     public GameOverScreen() {
         super(500, 800);
     }
@@ -44,8 +43,11 @@ public class GameOverScreen extends ScalableGameScreen {
         GameApp.endSpriteRendering();
 
         if (GameApp.isKeyPressed(Input.Keys.SPACE)){
+            Score score = new Score();
+            score.score = GameScreen.SCORE;
+            score.username = MainMenuScreen.username;
+            scores.add(score);
             GameScreen.SCORE = 0;
-
             GameScreen.STAGE = 0;
             GameScreen.START_GAME = 1;
             GameApp.switchScreen("MainMenuScreen");
