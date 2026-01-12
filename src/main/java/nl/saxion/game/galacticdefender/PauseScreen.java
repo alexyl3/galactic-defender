@@ -21,6 +21,7 @@ public class PauseScreen extends ScalableGameScreen{
         super.render(delta);
 
         if (GameApp.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            GameScreen.START_GAME = 1;
             GameApp.switchScreen("MainMenuScreen");
         } else if (GameApp.isKeyJustPressed(Input.Keys.SPACE)) {
             GameApp.switchScreen("GameScreen");
