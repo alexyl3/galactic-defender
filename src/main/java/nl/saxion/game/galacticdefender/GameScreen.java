@@ -6,6 +6,7 @@ import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class GameScreen extends ScalableGameScreen {
     public static final int BG_SPEED = 700;
@@ -13,11 +14,13 @@ public class GameScreen extends ScalableGameScreen {
     public static final int SPACESHIP_SIZE = 90;
     public static final int BULLET_SPEED = 500;
     public static final int HEART_SIZE = 50;
-    public static final int ALIEN_SIZE = 120;
+    public static final int ALIEN_SIZE = 100;
     public static final int ENEMY_BULLET_SIZE = 50;
     public static final int PLAYER_BULLET_SIZE = 30;
     public static final int BOOSTER_SIZE = 30;
     public static int SCORE = 0;
+    public static int START_GAME = 0;
+    public static int activeSpaceship = 0;
     public static int coin_display = 0;
     public static int STAGE = 0;
     ArrayList<String> environments =  new ArrayList<>(Arrays.asList("basic", "fire", "ice", "desert"
@@ -52,26 +55,41 @@ public class GameScreen extends ScalableGameScreen {
 
     @Override
     public void show() {
+        if (START_GAME == 1) {
+            SCORE = 0;
+            STAGE = 0;
+            START_GAME = 0;
+            startGame();
+        }
+        if (STAGE == 0) {
+            player = new SpaceShip();
+            player.x = (getWorldWidth() - SPACESHIP_SIZE) / 2;
+            player.y = 0;
+            player.lives = 49;
+        }
         spaceOffset = 0;
         GameApp.addTexture("space-bg", "textures/" + environments.get(STAGE) + "_textures/space.png");
-        GameApp.addTexture("spaceship", "textures/" + environments.get(STAGE) + "_textures/spaceship.png");
+        GameApp.addTexture("spaceship", "textures/shop_textures/" + activeSpaceship + "_spaceship.png");
         GameApp.addTexture("alien", "textures/" + environments.get(STAGE) + "_textures/alien.png");
 
         GameApp.addTexture("player_shot", "textures/Other_graphics/shot.png");
         GameApp.addTexture("heart", "textures/Other_graphics/heart.png");
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 16);
         GameApp.addTexture("enemy_shot", "textures/Other_graphics/BulletFire.png");
-        GameApp.addTexture("Asteroid", "textures/Other_graphics/Asteroid.png");
+        GameApp.addTexture("Asteroid", "textures/" + environments.get(STAGE) + "_textures/asteroid.png");
         GameApp.addTexture("bullet_booster", "textures/Other_graphics/bullet_booster.png");
         GameApp.addTexture("shield_booster", "textures/Other_graphics/shield_booster.png");
         GameApp.addTexture("health_booster", "textures/Other_graphics/health_booster.png");
-        GameApp.addTexture("shield", "textures/Other_graphics/shield.png");
+        GameApp.addTexture("shield", "textures/Other_graphics/spr_shield.png");
         GameApp.addTexture("coin","textures/basic_textures/coin.png");
 
-        player = new SpaceShip();
-        player.x = getWorldWidth() / 2;
-        player.y = 0;
-        player.lives = 49;
+        GameApp.addSound("laser", "audio/Laser.wav");
+        GameApp.addSound("explosion", "audio/SpaceshipExplosion.wav");
+        GameApp.addSound("booster_pickup", "audio/Booster_pickup.wav");
+        GameApp.addMusic("menu_music", "audio/game_loop_music.mp3");
+        GameApp.addSound("asteroid_damage", "audio/asteroid_damage.wav");
+        GameApp.playMusic("menu_music", true, 0.7f);
+
 
     }
     @Override
@@ -96,7 +114,7 @@ public class GameScreen extends ScalableGameScreen {
         }
 
         if (player.lives <= 0) {
-            startGame();
+            GameApp.playSound("explosion");
             GameApp.switchScreen("GameOverScreen");
         }
 
@@ -148,8 +166,14 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.disposeTexture("heart");
         GameApp.disposeTexture("shield_booster");
         GameApp.disposeTexture("bullet_booster");
+        GameApp.disposeSound("asteroid_damage");
 
         GameApp.disposeTexture("shield");
+
+        GameApp.disposeSound("laser");
+        GameApp.disposeSound("explosion");
+        GameApp.disposeSound("booster_pickup");
+        GameApp.disposeMusic("menu_music");
     }
 
     public void handlePlayerInput(float delta) {
@@ -171,7 +195,9 @@ public class GameScreen extends ScalableGameScreen {
             player.x += SPACESHIP_SPEED * delta  * (1 + (float) 0.25 * STAGE);
         }
         player.x = GameApp.clamp(player.x, 0, getWorldWidth() - SPACESHIP_SIZE);
-
+        if (GameApp.isKeyPressed(Input.Keys.ESCAPE)) {
+            GameApp.switchScreen("PauseScreen");
+        }
     }
 
     public void handleCollision() {
@@ -182,7 +208,7 @@ public class GameScreen extends ScalableGameScreen {
                     player.lives -= 5;
                 }
                 if (player.lives <= 0) {
-                    startGame();
+                    GameApp.playSound("explosion");
                     GameApp.switchScreen("GameOverScreen");
                 }
             }
@@ -196,7 +222,7 @@ public class GameScreen extends ScalableGameScreen {
                     player.lives -= 1;
                 }
                 if (player.lives <= 0) {
-                    startGame();
+                    GameApp.playSound("explosion");
                     GameApp.switchScreen("GameOverScreen");
                 }
             }
@@ -205,6 +231,7 @@ public class GameScreen extends ScalableGameScreen {
         for (Booster booster : boosters) {
             if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, booster.x, booster.y, BOOSTER_SIZE, BOOSTER_SIZE) && booster.active) {
                 booster.active = false;
+                GameApp.playSound("booster_pickup");
                 if (booster.type.equals("health_booster")) {
                     player.lives += 10;
                 } else {
@@ -216,10 +243,11 @@ public class GameScreen extends ScalableGameScreen {
         for (Asteroid asteroid : asteroids) {
             if (GameApp.rectOverlap(asteroid.x, asteroid.y, 80, 80, player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE) &&
                     asteroid.active) {
+                GameApp.playSound("asteroid_damage");
                 asteroid.active = false;
                 player.lives -= 3;
                 if (player.lives <= 0) {
-                    startGame();
+                    GameApp.playSound("explosion");
                     GameApp.switchScreen("GameOverScreen");
                 }
             }
@@ -228,6 +256,7 @@ public class GameScreen extends ScalableGameScreen {
         for (Coin coin : coins) {
             if (GameApp.rectOverlap(coin.x, coin.y, 80, 80, player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE) &&
                     coin.active) {
+                GameApp.playSound("booster_pickup");
                 coin.active = false;
                 coin_display++;
             }
@@ -237,6 +266,7 @@ public class GameScreen extends ScalableGameScreen {
             if (player_bullet.active) {
                 for (Alien enemy : aliens) {
                     if (enemy.alive && GameApp.rectOverlap(player_bullet.x, player_bullet.y, PLAYER_BULLET_SIZE, PLAYER_BULLET_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE)) {
+                        GameApp.playSound("laser");
                         enemy.health -= 3;
                         player_bullet.active = false;
                         if (enemy.health <= 0) {
@@ -389,6 +419,11 @@ public class GameScreen extends ScalableGameScreen {
     }
 
     public void startGame() {
+        try {
+            TimeUnit.MILLISECONDS.sleep(300);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
         collected_boosters = new ArrayList<>();
         player_bullet_timer = 0;
         enemy_bullet_timer = 0;

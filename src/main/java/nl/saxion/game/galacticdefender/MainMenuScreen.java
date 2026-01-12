@@ -5,6 +5,11 @@ import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 public class MainMenuScreen extends ScalableGameScreen {
+    public static String username = "";
+    String currentText = "";
+    boolean usernameSaved = false;
+    String usernameColor = "white";
+    float cursorBlink = 0;
     public MainMenuScreen() {
         super(500, 800);
     }
@@ -12,54 +17,81 @@ public class MainMenuScreen extends ScalableGameScreen {
     @Override
     public void show() {
         GameApp.addFont("basic", "fonts/basic.ttf", 100);
-        GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 32);
+        GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 20);
         GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
         GameApp.addTexture("play_button", "textures/Other_graphics/play_button.png");
         GameApp.addTexture("Rectangle_box", "textures/Other_graphics/Rectangle_box.png");
         GameApp.addTexture("asteriod", "textures/Other_graphics/asteriod.png");
         GameApp.addTexture("Button","textures/Other_graphics/Button.png");
         GameApp.addTexture("Customise_button","textures/other_graphics/customise_button.png");
+        GameApp.addTexture("leaderboard_button","textures/other_graphics/leaderboard_button.png");
+        GameApp.addFont("Game_Paused","fonts/Game_Paused.otf",32);
+        GameApp.addTexture("Customise_button","textures/Other_graphics/customise_button-removebg-preview.png");
+        GameApp.addTexture("shop_button","textures/other_graphics/shop_button.png");
+
+        GameApp.addMusic("menu_music", "audio/game_loop_music.mp3");
+        GameApp.playMusic("menu_music", true, 0.7f);
+
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-
-        // When the user presses enter, go to the next screen
-        if (GameApp.isKeyJustPressed(Input.Keys.ENTER)) {
-            GameApp.switchScreen("GameScreen");
-        }
+        cursorBlink += delta;
 
         float mouseX = getMouseX();
         float mouseY = getMouseY();
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-50,getWorldHeight()-50,GameApp.getTextureWidth("Button"),GameApp.getTextureHeight("Button"))){
             GameApp.switchScreen("ManualScreen");
         }
+        if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-95,getWorldHeight()-50, 32, 32)){
+            GameApp.switchScreen("LeaderboardScreen");
+        }
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-500,getWorldHeight()-100,GameApp.getTextureWidth("customise_button"),GameApp.getTextureHeight("customise_button"))){
             GameApp.switchScreen("CustomizationScreen");
+        }
+        if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInRect(mouseX,mouseY,getWorldWidth()-510,getWorldHeight()-180,GameApp.getTextureWidth("shop_button"),GameApp.getTextureHeight("shop_button"))){
+            GameApp.switchScreen("ShopScreen");
+        }
+        if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInCircle(mouseX,mouseY, 260, 330, 60)){
+            GameApp.switchScreen("GameScreen");
         }
 
         // Render the main menu
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
         GameApp.drawTexture("background",0,0, getWorldWidth(), getWorldHeight());
-        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth(),100);
+        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth()+50,100);
 
-        float btnX = getWorldWidth() / 2f - 40;   // button width ~160
-        float btnY = getWorldHeight() / 2f - 120;  // lower
+        float btnX = getWorldWidth() / 2f - 50;   // button width ~160
+        float btnY = getWorldHeight() / 2f - 130;  // lower
 
-        GameApp.drawTexture("play_button", btnX, btnY, 120, 80);
+        GameApp.drawTexture("play_button", btnX, btnY, 120, 120);
 
-        String title = "Pixel_Emulator";
+        String title = "Game_Paused";
         float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
         GameApp.drawTexture("Button",getWorldWidth()-50,getWorldHeight()-50);
+        GameApp.drawTexture("leaderboard_button",getWorldWidth()-95,getWorldHeight()-50, 32, 32);
         GameApp.drawTexture("customise_button",getWorldWidth()-500,getWorldHeight()-100);
-        GameApp.drawText(title,"Galactic Defender",textX+100,textY+10,"white");
+        GameApp.drawTexture("shop_button",getWorldWidth()-510,getWorldHeight()-180);
+        GameApp.drawText(title,"Galactic Defender",textX + 150,textY+10,"white");
+        GameApp.drawText("Pixel_Emulator", "Press ENTER to save", 50, textY - 230, "white");
+        GameApp.drawText("Pixel_Emulator", "Enter username: ", 50, textY - 200, "white");
+        if (usernameSaved) {
+            usernameColor = "yellow-400";
+        } else {
+            usernameColor = "white";
+        }
+        if (cursorBlink < 0.5) {
+            GameApp.drawText("Pixel_Emulator",  currentText + "|", 280, textY - 200, usernameColor);
+        } else {
+            if (cursorBlink > 1) {
+                cursorBlink = 0;
+            }
+            GameApp.drawText("Pixel_Emulator", currentText, 280, textY - 200, usernameColor);
+        }
         GameApp.endSpriteRendering();
-        if (GameApp.isKeyPressed(Input.Keys.ESCAPE)){
-            GameApp.switchScreen("YourGameScreen");}
-
 
     }
 
@@ -72,5 +104,28 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.disposeTexture("play_button");
         GameApp.disposeTexture("Rectangle_box");
         GameApp.disposeTexture("Button");
+        GameApp.disposeTexture("shop_button");
+        GameApp.disposeTexture("Customise_button");
+        GameApp.disposeMusic("menu_music");
+        GameApp.disposeTexture("leaderboard_button");
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        if(character == '\b') { // Backspace
+            if(!currentText.isEmpty()) {
+                // Remove the last character
+                usernameSaved = false;
+                currentText = currentText.substring(0, currentText.length() - 1);
+            }
+        } else if(character == '\r' || character == '\n') {
+            usernameSaved = true;
+            username = currentText;
+        } else {
+            // Add the typed character
+            usernameSaved = false;
+            currentText += character;
+        }
+        return true;
     }
 }
