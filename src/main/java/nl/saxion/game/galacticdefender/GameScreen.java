@@ -109,7 +109,7 @@ public class GameScreen extends ScalableGameScreen {
         SCORE += (int)(delta * 60);
 
         if (SCORE > 500 + STAGE * 500) {
-            STAGE += 4;
+            STAGE += 1;
             GameApp.switchScreen("NewStageScreen");
         }
 

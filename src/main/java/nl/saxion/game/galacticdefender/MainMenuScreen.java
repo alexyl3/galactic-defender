@@ -54,7 +54,7 @@ public class MainMenuScreen extends ScalableGameScreen {
             GameApp.switchScreen("ShopScreen");
         }
         if (GameApp.isButtonJustPressed(Input.Buttons.LEFT)&&GameApp.pointInCircle(mouseX,mouseY, 260, 330, 60)){
-            GameApp.switchScreen("BossFightScreen");
+            GameApp.switchScreen("GameScreen");
         }
 
         // Render the main menu
