@@ -109,7 +109,7 @@ public class GameScreen extends ScalableGameScreen {
         SCORE += (int)(delta * 60);
 
         if (SCORE > 500 + STAGE * 500) {
-            STAGE ++;
+            STAGE += 4;
             GameApp.switchScreen("NewStageScreen");
         }
 
@@ -245,7 +245,9 @@ public class GameScreen extends ScalableGameScreen {
                     asteroid.active) {
                 GameApp.playSound("asteroid_damage");
                 asteroid.active = false;
-                player.lives -= 3;
+                if (shield_activated_timer <= 0) {
+                    player.lives -= 3;
+                }
                 if (player.lives <= 0) {
                     GameApp.playSound("explosion");
                     GameApp.switchScreen("GameOverScreen");

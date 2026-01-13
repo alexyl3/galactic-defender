@@ -47,14 +47,24 @@ public class NewStageScreen extends ScalableGameScreen {
         GameApp.clearScreen();
         GameApp.startSpriteRendering();
         GameApp.drawTexture("GameOverBackground",0,0,getWorldWidth(),getWorldHeight());
-        GameApp.drawTextCentered("Pixel_Emulator", "Round " + GameScreen.STAGE , 300,text1Y, "white");
-        GameApp.drawTextCentered("Pixel_Emulator", "Complete " , 300, text2Y, "white");
-        GameApp.drawTextCentered("Pixel_Emulator", "Press SPACE \n to continue", 300, getWorldHeight() / 2 - 100, "white");
+        if (GameScreen.STAGE == 4) {
+            GameApp.drawTextCentered("Pixel_Emulator", "Round " + GameScreen.STAGE , 300,text1Y, "white");
+            GameApp.drawTextCentered("Pixel_Emulator", "Complete " , 300, text2Y, "white");
+            GameApp.drawTextCentered("Pixel_Emulator", "Press SPACE \n to start the boss fight", 300, getWorldHeight() / 2 - 100, "white");
+        } else {
+            GameApp.drawTextCentered("Pixel_Emulator", "Round " + GameScreen.STAGE , 300,text1Y, "white");
+            GameApp.drawTextCentered("Pixel_Emulator", "Complete " , 300, text2Y, "white");
+            GameApp.drawTextCentered("Pixel_Emulator", "Press SPACE \n to continue", 300, getWorldHeight() / 2 - 100, "white");
+        }
 
         GameApp.endSpriteRendering();
 
         if (GameApp.isKeyPressed(Input.Keys.SPACE)){
-            GameApp.switchScreen("GameScreen");
+            if (GameScreen.STAGE == 4) {
+                GameApp.switchScreen("BossFightScreen");
+            } else {
+                GameApp.switchScreen("GameScreen");
+            }
         }
 
     }
