@@ -115,6 +115,7 @@ public class GameScreen extends ScalableGameScreen {
 
         if (player.lives <= 0) {
             GameApp.playSound("explosion");
+            timeOut();
             GameApp.switchScreen("GameOverScreen");
         }
 
@@ -125,7 +126,7 @@ public class GameScreen extends ScalableGameScreen {
         handlePlayerInput(delta);
         createNewEntities();
 
-        spaceOffset -= BG_SPEED * delta  * (1 + (float) 0.1 * STAGE);
+        spaceOffset -= BG_SPEED * delta  * (1 + (float) 0.15* STAGE);
         if (spaceOffset < -1 * GameApp.getTextureHeight("space-bg")) {
             spaceOffset = 0;
         }
@@ -190,9 +191,9 @@ public class GameScreen extends ScalableGameScreen {
             }
         }
         if (GameApp.isKeyPressed(Input.Keys.LEFT) || GameApp.isKeyPressed(Input.Keys.A)) {
-            player.x -= SPACESHIP_SPEED * delta * (1 + (float) 0.1 * STAGE);
+            player.x -= SPACESHIP_SPEED * delta * (1 + (float) 0.15* STAGE);
         } else if (GameApp.isKeyPressed(Input.Keys.RIGHT) || GameApp.isKeyPressed(Input.Keys.D)) {
-            player.x += SPACESHIP_SPEED * delta  * (1 + (float) 0.1 * STAGE);
+            player.x += SPACESHIP_SPEED * delta  * (1 + (float) 0.15* STAGE);
         }
         player.x = GameApp.clamp(player.x, 0, getWorldWidth() - SPACESHIP_SIZE);
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -209,6 +210,7 @@ public class GameScreen extends ScalableGameScreen {
                 }
                 if (player.lives <= 0) {
                     GameApp.playSound("explosion");
+                    timeOut();
                     GameApp.switchScreen("GameOverScreen");
                 }
             }
@@ -223,6 +225,7 @@ public class GameScreen extends ScalableGameScreen {
                 }
                 if (player.lives <= 0) {
                     GameApp.playSound("explosion");
+                    timeOut();
                     GameApp.switchScreen("GameOverScreen");
                 }
             }
@@ -245,11 +248,12 @@ public class GameScreen extends ScalableGameScreen {
                     asteroid.active) {
                 GameApp.playSound("asteroid_damage");
                 asteroid.active = false;
-                if (shield_activated_timer <= 0) {
-                    player.lives -= 3;
+                if (shield_activated_timer <= 0 && activeSpaceship != 2) {
+                    player.lives -= 2;
                 }
                 if (player.lives <= 0) {
                     GameApp.playSound("explosion");
+                    timeOut();
                     GameApp.switchScreen("GameOverScreen");
                 }
             }
@@ -281,7 +285,26 @@ public class GameScreen extends ScalableGameScreen {
     }
     public void createNewEntities() {
         if (player_bullet_timer >= 0.15) {
-            if (bullet_activated_timer > 0 ) {
+            if (bullet_activated_timer > 0 && activeSpaceship == 1) {
+                Bullet newBullet = new Bullet();
+                GameApp.addInterpolator("player_bullet" + player_bullets.size(), 0, getWorldHeight(), 5f, "pow2");
+                newBullet.x = (float) (player.x + SPACESHIP_SIZE / 2.6 - 15);
+                newBullet.y = getWorldHeight();
+                newBullet.interpolator = "player_bullet" + player_bullets.size();
+                player_bullets.add(newBullet);
+                newBullet = new Bullet();
+                GameApp.addInterpolator("player_bullet" + player_bullets.size(), 0, getWorldHeight(), 5f, "pow2");
+                newBullet.x = (float) (player.x + SPACESHIP_SIZE / 2.6);
+                newBullet.y = getWorldHeight();
+                newBullet.interpolator = "player_bullet" + player_bullets.size();
+                player_bullets.add(newBullet);
+                newBullet = new Bullet();
+                GameApp.addInterpolator("player_bullet" + player_bullets.size(), 0, getWorldHeight(), 5f, "pow2");
+                newBullet.x = (float) (player.x + SPACESHIP_SIZE / 2.6 + 15);
+                newBullet.y = getWorldHeight();
+                newBullet.interpolator = "player_bullet" + player_bullets.size();
+                player_bullets.add(newBullet);
+            } else if (bullet_activated_timer > 0 || activeSpaceship == 1) {
                 Bullet newBullet = new Bullet();
                 GameApp.addInterpolator("player_bullet" + player_bullets.size(), 0, getWorldHeight(), 5f, "pow2");
                 newBullet.x = (float) (player.x + SPACESHIP_SIZE / 2.6 - 10);
@@ -365,20 +388,20 @@ public class GameScreen extends ScalableGameScreen {
         for (Alien currAlien : aliens) {
             if (currAlien.alive) {
                 GameApp.drawTexture("alien", currAlien.x, currAlien.y, ALIEN_SIZE, ALIEN_SIZE);
-                currAlien.y -= delta * BG_SPEED * (1 + (float) 0.1 * STAGE);
+                currAlien.y -= delta * BG_SPEED * (1 + (float) 0.15* STAGE);
             }
         }
 
         for (Booster booster : boosters) {
             if (booster.active) {
                 GameApp.drawTexture(booster.type, booster.x, booster.y, BOOSTER_SIZE, BOOSTER_SIZE);
-                booster.y -= delta * BG_SPEED * (1 + (float) 0.1 * STAGE);
+                booster.y -= delta * BG_SPEED * (1 + (float) 0.15* STAGE);
             }
         }
 
         for (Bullet bullet : player_bullets) {
             if (!GameApp.isInterpolatorFinished(bullet.interpolator) && bullet.active) {
-                float bulletY = (GameApp.updateInterpolator(bullet.interpolator) * delta * BULLET_SPEED + SPACESHIP_SIZE)  * (1 + (float) 0.1 * STAGE);
+                float bulletY = (GameApp.updateInterpolator(bullet.interpolator) * delta * BULLET_SPEED + SPACESHIP_SIZE)  * (1 + (float) 0.15* STAGE);
                 bullet.y = bulletY;
                 GameApp.drawTexture("player_shot", bullet.x, bulletY);
                 if (bullet.y > getWorldHeight() + 50) {
@@ -389,7 +412,7 @@ public class GameScreen extends ScalableGameScreen {
 
         for (Bullet bullet : enemy_bullets) {
             if (bullet.active) {
-                bullet.y -= delta * BULLET_SPEED * 5 * (1 + (float) 0.1 * STAGE);
+                bullet.y -= delta * BULLET_SPEED * 5 * (1 + (float) 0.15* STAGE);
                 GameApp.drawTexture("enemy_shot", bullet.x, bullet.y, ENEMY_BULLET_SIZE, ENEMY_BULLET_SIZE);
                 if (bullet.y < -20) {
                     bullet.active = false;
@@ -399,11 +422,11 @@ public class GameScreen extends ScalableGameScreen {
 
         for(Asteroid currAsteroid:asteroids){
             GameApp.drawTexture("Asteroid",currAsteroid.x,currAsteroid.y,80,80);
-            currAsteroid.y -= delta * BG_SPEED * (1 + (float) 0.1 * STAGE);
+            currAsteroid.y -= delta * BG_SPEED * (1 + (float) 0.15* STAGE);
         }
         for(Coin currCoin:coins){
             if(currCoin.active){
-                currCoin.y -= delta * BG_SPEED * (1 + (float) 0.1 * STAGE);
+                currCoin.y -= delta * BG_SPEED * (1 + (float) 0.15* STAGE);
 
                 GameApp.drawTexture("coin",currCoin.x,currCoin.y,40,40);
                 if(currCoin.y < -40){
@@ -421,11 +444,6 @@ public class GameScreen extends ScalableGameScreen {
     }
 
     public void startGame() {
-        try {
-            TimeUnit.MILLISECONDS.sleep(300);
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-        }
         collected_boosters = new ArrayList<>();
         player_bullet_timer = 0;
         enemy_bullet_timer = 0;
@@ -446,4 +464,13 @@ public class GameScreen extends ScalableGameScreen {
 
         shield_activated_timer = 0;
         bullet_activated_timer = 0;
-    }}
+    }
+
+    public void timeOut() {
+        try {
+            TimeUnit.MILLISECONDS.sleep(300);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}

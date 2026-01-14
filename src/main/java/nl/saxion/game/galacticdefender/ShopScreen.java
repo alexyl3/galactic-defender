@@ -13,6 +13,7 @@ public class ShopScreen extends ScalableGameScreen {
     public static final int itemSize = 100;
     public static final ArrayList<Integer> prices = new ArrayList<>(Arrays.asList(20, 30, 40));
     public static ArrayList<Integer> availableSpaceships = new ArrayList<>(List.of(0));
+    ArrayList<String> descriptions = new ArrayList<>(Arrays.asList("Basic", "Double bullets", "Asteroid protection"));
     public ShopScreen() {
         super(500,800);
     }
@@ -45,16 +46,17 @@ public class ShopScreen extends ScalableGameScreen {
         GameApp.drawTexture("arrow", 20,getWorldHeight() - 60, 40, 40);
         GameApp.drawText("Pixel_Emulator_B","Shop",120,GameApp.getWorldHeight() - 55,"white");
         for (int i = 0; i < itemsInShop; i++) {
-            GameApp.drawTexture("item" + i, 40, getWorldHeight() - 100 - (1 + i) * (40 + itemSize), itemSize, itemSize);
+            GameApp.drawTexture("item" + i, 40, getWorldHeight() - 100 - (1 + i) * (60 + itemSize), itemSize, itemSize);
             if (i == GameScreen.activeSpaceship) {
-                GameApp.drawTexture("active", 300, getWorldHeight() - 100 - (1 + i) * (40 + itemSize));
+                GameApp.drawTexture("active", 300, getWorldHeight() - 100 - (1 + i) * (60 + itemSize));
             } else if (availableSpaceships.contains(i)) {
-                GameApp.drawTexture("activate", 300, getWorldHeight() - 100 - (1 + i) * (40 + itemSize));
+                GameApp.drawTexture("activate", 300, getWorldHeight() - 100 - (1 + i) * (60 + itemSize));
             } else {
-                GameApp.drawTexture("coin",180, getWorldHeight() - 100 - (1 + i) * (30 + itemSize), 20, 20 );
-                GameApp.drawText("Pixel_Emulator", prices.get(i) + "" ,220, getWorldHeight() - 100 - (1 + i) * (30 + itemSize), "white");
-                GameApp.drawTexture("buy", 300, getWorldHeight() - 100 - (1 + i) * (40 + itemSize));
+                GameApp.drawTexture("coin",180, getWorldHeight() - 100 - (1 + i) * (40 + itemSize), 20, 20 );
+                GameApp.drawText("Pixel_Emulator", prices.get(i) + "" ,220, getWorldHeight() - 100 - (1 + i) * (40 + itemSize), "white");
+                GameApp.drawTexture("buy", 300, getWorldHeight() - 100 - (1 + i) * (50 + itemSize));
             }
+            GameApp.drawText("Pixel_Emulator", descriptions.get(i), 40, getWorldHeight() + 20 - (1 + i) * (60 + itemSize), "white");
         }
 
         GameApp.endSpriteRendering();
