@@ -107,7 +107,7 @@ public class BossFightScreen  extends ScalableGameScreen {
         }
         if (enemy_bullet_timer >= 0.2) {
             Bullet newBullet = new Bullet();
-            newBullet.x = boss.x + 125 + GameApp.randomInt(-50, 50);
+            newBullet.x = boss.x + 125 + GameApp.randomInt(-100, 100);
             newBullet.y = 520;
             newBullet.interpolator = "enemy_bullet" + enemy_bullets.size();
             enemy_bullets.add(newBullet);
@@ -154,9 +154,9 @@ public class BossFightScreen  extends ScalableGameScreen {
                 boss.health -= 2;
                 GameApp.playSound("laser");
                 if (bullet.x <= boss.x + 125) {
-                   boss.x = GameApp.clamp(boss.x + GameApp.random(10, 50), 0, 250);
+                   boss.x = GameApp.clamp(boss.x + GameApp.random(-20, 50), 0, 250);
                 } else {
-                    boss.x = GameApp.clamp(boss.x - GameApp.random(10, 50), 0, 250);
+                    boss.x = GameApp.clamp(boss.x - GameApp.random(-20, 50), 0, 250);
                 }
                 if (boss.health <= 0) {
                     GameApp.playSound("explosion");

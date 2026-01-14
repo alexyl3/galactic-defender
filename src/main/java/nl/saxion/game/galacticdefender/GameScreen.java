@@ -125,7 +125,7 @@ public class GameScreen extends ScalableGameScreen {
         handlePlayerInput(delta);
         createNewEntities();
 
-        spaceOffset -= BG_SPEED * delta  * (1 + (float) 0.25 * STAGE);
+        spaceOffset -= BG_SPEED * delta  * (1 + (float) 0.1 * STAGE);
         if (spaceOffset < -1 * GameApp.getTextureHeight("space-bg")) {
             spaceOffset = 0;
         }
@@ -190,9 +190,9 @@ public class GameScreen extends ScalableGameScreen {
             }
         }
         if (GameApp.isKeyPressed(Input.Keys.LEFT) || GameApp.isKeyPressed(Input.Keys.A)) {
-            player.x -= SPACESHIP_SPEED * delta * (1 + (float) 0.25 * STAGE);
+            player.x -= SPACESHIP_SPEED * delta * (1 + (float) 0.1 * STAGE);
         } else if (GameApp.isKeyPressed(Input.Keys.RIGHT) || GameApp.isKeyPressed(Input.Keys.D)) {
-            player.x += SPACESHIP_SPEED * delta  * (1 + (float) 0.25 * STAGE);
+            player.x += SPACESHIP_SPEED * delta  * (1 + (float) 0.1 * STAGE);
         }
         player.x = GameApp.clamp(player.x, 0, getWorldWidth() - SPACESHIP_SIZE);
         if (GameApp.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -365,20 +365,20 @@ public class GameScreen extends ScalableGameScreen {
         for (Alien currAlien : aliens) {
             if (currAlien.alive) {
                 GameApp.drawTexture("alien", currAlien.x, currAlien.y, ALIEN_SIZE, ALIEN_SIZE);
-                currAlien.y -= delta * BG_SPEED * (1 + (float) 0.25 * STAGE);
+                currAlien.y -= delta * BG_SPEED * (1 + (float) 0.1 * STAGE);
             }
         }
 
         for (Booster booster : boosters) {
             if (booster.active) {
                 GameApp.drawTexture(booster.type, booster.x, booster.y, BOOSTER_SIZE, BOOSTER_SIZE);
-                booster.y -= delta * BG_SPEED * (1 + (float) 0.25 * STAGE);
+                booster.y -= delta * BG_SPEED * (1 + (float) 0.1 * STAGE);
             }
         }
 
         for (Bullet bullet : player_bullets) {
             if (!GameApp.isInterpolatorFinished(bullet.interpolator) && bullet.active) {
-                float bulletY = (GameApp.updateInterpolator(bullet.interpolator) * delta * BULLET_SPEED + SPACESHIP_SIZE)  * (1 + (float) 0.25 * STAGE);
+                float bulletY = (GameApp.updateInterpolator(bullet.interpolator) * delta * BULLET_SPEED + SPACESHIP_SIZE)  * (1 + (float) 0.1 * STAGE);
                 bullet.y = bulletY;
                 GameApp.drawTexture("player_shot", bullet.x, bulletY);
                 if (bullet.y > getWorldHeight() + 50) {
@@ -389,7 +389,7 @@ public class GameScreen extends ScalableGameScreen {
 
         for (Bullet bullet : enemy_bullets) {
             if (bullet.active) {
-                bullet.y -= delta * BULLET_SPEED * 5 * (1 + (float) 0.25 * STAGE);
+                bullet.y -= delta * BULLET_SPEED * 5 * (1 + (float) 0.1 * STAGE);
                 GameApp.drawTexture("enemy_shot", bullet.x, bullet.y, ENEMY_BULLET_SIZE, ENEMY_BULLET_SIZE);
                 if (bullet.y < -20) {
                     bullet.active = false;
@@ -399,11 +399,11 @@ public class GameScreen extends ScalableGameScreen {
 
         for(Asteroid currAsteroid:asteroids){
             GameApp.drawTexture("Asteroid",currAsteroid.x,currAsteroid.y,80,80);
-            currAsteroid.y -= delta * BG_SPEED * (1 + (float) 0.25 * STAGE);
+            currAsteroid.y -= delta * BG_SPEED * (1 + (float) 0.1 * STAGE);
         }
         for(Coin currCoin:coins){
             if(currCoin.active){
-                currCoin.y -= delta * BG_SPEED * (1 + (float) 0.25 * STAGE);
+                currCoin.y -= delta * BG_SPEED * (1 + (float) 0.1 * STAGE);
 
                 GameApp.drawTexture("coin",currCoin.x,currCoin.y,40,40);
                 if(currCoin.y < -40){

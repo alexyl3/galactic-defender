@@ -13,6 +13,8 @@ public class VictoryScreen extends ScalableGameScreen{
     public void show() {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
         GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
+        GameApp.addSpriteSheet("fire", "textures/Other_graphics/fireworks.png", 200, 250);
+        GameApp.addAnimationFromSpritesheet("fireworks", "fire", 0.2f, true);
     }
 
 
@@ -20,6 +22,7 @@ public class VictoryScreen extends ScalableGameScreen{
     public void render(float delta) {
         super.render(delta);
 
+        GameApp.updateAnimation("fireworks");
         if (GameApp.isKeyJustPressed(Input.Keys.ESCAPE) | GameApp.isKeyJustPressed(Input.Keys.ENTER)) {
             Score score = new Score();
             score.score = GameScreen.SCORE + 1000;
@@ -35,11 +38,11 @@ public class VictoryScreen extends ScalableGameScreen{
 
         GameApp.drawTexture("background",0,0,getWorldWidth(),getWorldHeight());
         String title = "Pixel_Emulator";
-        float textX1 = getWorldWidth()/2f-100;
         float textY1 = getWorldHeight()/2f+20;
-        GameApp.drawText(title,"VICTORY",textX1,textY1,"white");
-        GameApp.drawText(title,"Press ENTER to go to menu",textX1-130,textY1-200,"white");
-
+        GameApp.drawTextCentered(title,"!! VICTORY !!",GameApp.getWorldWidth() / 2,textY1,"yellow-500");
+        GameApp.drawTextCentered(title," Press ENTER \nto go to menu",GameApp.getWorldWidth() / 2,textY1 - 100,"white");
+        GameApp.drawAnimation("fireworks", 20, 500, 200, 250, 0, true, false);
+        GameApp.drawAnimation("fireworks", 290, 500);
         GameApp.endSpriteRendering();
 
     }
@@ -49,6 +52,7 @@ public class VictoryScreen extends ScalableGameScreen{
     public void hide() {
         GameApp.disposeTexture("background");
         GameApp.disposeFont("Pixel_Emulator");
+        GameApp.disposeSpritesheet("fire");
     }
 
 }
