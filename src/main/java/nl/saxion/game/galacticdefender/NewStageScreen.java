@@ -21,6 +21,7 @@ public class NewStageScreen extends ScalableGameScreen {
         text2Y = 0;
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
         GameApp.addTexture("GameOverBackground", "textures/Other_Backgrounds/GameOverBackground.png");
+
     }
 
 
@@ -56,6 +57,7 @@ public class NewStageScreen extends ScalableGameScreen {
             GameApp.drawTextCentered("Pixel_Emulator", "Complete " , 300, text2Y, "white");
             GameApp.drawTextCentered("Pixel_Emulator", "Press SPACE \n to continue", 300, getWorldHeight() / 2 - 100, "white");
         }
+
 
         GameApp.endSpriteRendering();
 
