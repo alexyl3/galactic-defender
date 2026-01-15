@@ -21,7 +21,7 @@ public class CustomizationScreen extends ScalableGameScreen {
         GameApp.addTexture("leftArrow","textures/shop_textures/back_arrow.png");
         GameApp.addTexture("rightArrow","textures/shop_textures/right_arrow.png");
         GameApp.addTexture("spaceship2","textures/shop_textures/1_spaceship.png");
-        GameApp.addTexture("spaceship3","textures/shop_textures/2_spaceship.png");
+        GameApp.addTexture("spaceship3","textures/shop_textures/spaceship3.png");
         GameApp.addTexture("spaceship4","textures/shop_textures/spaceship4.png");
 
 
@@ -38,8 +38,11 @@ public class CustomizationScreen extends ScalableGameScreen {
 
         GameApp.clearScreen();
         GameApp.startSpriteRendering();
-        GameApp.drawText("Pixel_Emulator","Customization Screen",90,700,"white");
         GameApp.drawTexture("customization_background",0,0,getWorldWidth(),getWorldHeight());
+        GameApp.drawText("Pixel_Emulator","Customization Screen",50,650,"white");
+        GameApp.drawText("Pixel_Emulator","Press enter to select ",50,550,"white");
+        GameApp.drawText("Pixel_Emulator","your spaceship",50,500,"white");
+
         String currShip = ships[index];
         GameApp.drawTexture(currShip,getWorldWidth() / 2f - 64,getWorldHeight() / 2f - 64);
 
@@ -80,9 +83,15 @@ public class CustomizationScreen extends ScalableGameScreen {
                 }
             }
         }
+
+        if (GameApp.isKeyJustPressed(Input.Keys.ENTER)){
+            GameScreen.activeSpaceship = index;
+            GameApp.switchScreen("MainMenuScreen");
+        }
         if (GameApp.isKeyJustPressed(Input.Keys.ESCAPE)){
             GameApp.switchScreen("MainMenuScreen");
         }
+
 
 
         GameApp.endSpriteRendering();
