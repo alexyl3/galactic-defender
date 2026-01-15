@@ -5,6 +5,7 @@ import nl.saxion.gameapp.GameApp;
 import nl.saxion.gameapp.screens.ScalableGameScreen;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class BossFightScreen  extends ScalableGameScreen {
     SpaceShip player;
@@ -34,8 +35,11 @@ public class BossFightScreen  extends ScalableGameScreen {
         GameApp.addTexture("enemy_shot", "textures/Other_graphics/BulletFire.png");
         GameApp.addTexture("player_shot", "textures/Other_graphics/shot.png");
         GameApp.addSound("explosion", "audio/SpaceshipExplosion.wav");
+        GameApp.addMusic("music", "audio/BossFightBgm.mp3");
         GameApp.addSound("laser", "audio/Laser.wav");
         GameApp.addTexture("spaceship", "textures/shop_textures/" + GameScreen.activeSpaceship + "_spaceship.png");
+
+        GameApp.playMusic("music", true, 0.7f);
 
     }
 
@@ -76,6 +80,7 @@ public class BossFightScreen  extends ScalableGameScreen {
         GameApp.disposeTexture("enemy_shot");
         GameApp.disposeTexture("spaceship");
         GameApp.disposeTexture("player_shot");
+        GameApp.disposeMusic("music");
         GameApp.disposeSound("explosion");
         GameApp.disposeSound("laser");
     }
@@ -142,7 +147,8 @@ public class BossFightScreen  extends ScalableGameScreen {
                 enemy_bullet.active = false;
                 player.lives -= 3;
                 if (player.lives <= 0) {
-                    GameApp.playSound("explosion");
+                    GameApp.playSound("explosion", 0.7f);
+                    timeOut();
                     GameApp.switchScreen("GameOverScreen");
                 }
             }
@@ -152,20 +158,25 @@ public class BossFightScreen  extends ScalableGameScreen {
                     bullet.active) {
                 bullet.active = false;
                 boss.health -= 2;
-                GameApp.playSound("laser");
+                GameApp.playSound("laser", 0.2f);
                 if (bullet.x <= boss.x + 125) {
                    boss.x = GameApp.clamp(boss.x + GameApp.random(-20, 50), 0, 250);
                 } else {
                     boss.x = GameApp.clamp(boss.x - GameApp.random(-20, 50), 0, 250);
                 }
                 if (boss.health <= 0) {
-                    GameApp.playSound("explosion");
                     GameApp.switchScreen("VictoryScreen");
                 }
             }
+        }}
+
+        public void timeOut() {
+            try {
+                TimeUnit.MILLISECONDS.sleep(300);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
         }
 
-
-    }
 
     }

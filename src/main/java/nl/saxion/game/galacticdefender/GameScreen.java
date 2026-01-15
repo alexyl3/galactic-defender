@@ -203,7 +203,7 @@ public class GameScreen extends ScalableGameScreen {
 
     public void handleCollision() {
         for (Alien enemy : aliens) {
-            if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE) && enemy.alive) {
+            if (GameApp.rectOverlap(player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE, enemy.x, enemy.y, enemy.size, enemy.size) && enemy.alive) {
                 enemy.alive = false;
                 if (shield_activated_timer <= 0) {
                     player.lives -= 5;
@@ -271,7 +271,7 @@ public class GameScreen extends ScalableGameScreen {
         for (Bullet player_bullet : player_bullets) {
             if (player_bullet.active) {
                 for (Alien enemy : aliens) {
-                    if (enemy.alive && GameApp.rectOverlap(player_bullet.x, player_bullet.y, PLAYER_BULLET_SIZE, PLAYER_BULLET_SIZE, enemy.x, enemy.y, ALIEN_SIZE, ALIEN_SIZE)) {
+                    if (enemy.alive && GameApp.rectOverlap(player_bullet.x, player_bullet.y, PLAYER_BULLET_SIZE, PLAYER_BULLET_SIZE, enemy.x, enemy.y, enemy.size, enemy.size)) {
                         GameApp.playSound("laser");
                         enemy.health -= 3;
                         player_bullet.active = false;
@@ -330,7 +330,7 @@ public class GameScreen extends ScalableGameScreen {
         if (alien_timer > 2) {
             alien_timer = 0;
             Alien alien = new Alien();
-            alien.size = GameApp.randomInt(10, 30);
+            alien.size = GameApp.random(Arrays.asList(90, 100, 110));
             int selected = GameApp.randomInt(0, available.size());
             alien.x = available.get(selected);
             available.remove(selected);
@@ -342,7 +342,7 @@ public class GameScreen extends ScalableGameScreen {
             for (Alien enemy : aliens) {
                 if (enemy.alive) {
                     Bullet newBullet = new Bullet();
-                    newBullet.x = (float) (enemy.x + enemy.size * 0.9);
+                    newBullet.x = (float) (enemy.x + enemy.size / 3.7);
                     newBullet.y = enemy.y;
                     newBullet.interpolator = "enemy_bullet" + enemy_bullets.size();
                     enemy_bullets.add(newBullet);
@@ -387,7 +387,7 @@ public class GameScreen extends ScalableGameScreen {
     void drawEntities(float delta) {
         for (Alien currAlien : aliens) {
             if (currAlien.alive) {
-                GameApp.drawTexture("alien", currAlien.x, currAlien.y, ALIEN_SIZE, ALIEN_SIZE);
+                GameApp.drawTexture("alien", currAlien.x, currAlien.y, currAlien.size, currAlien.size);
                 currAlien.y -= delta * BG_SPEED * (1 + (float) 0.15* STAGE);
             }
         }
