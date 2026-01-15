@@ -14,7 +14,6 @@ public class GameScreen extends ScalableGameScreen {
     public static final int SPACESHIP_SIZE = 90;
     public static final int BULLET_SPEED = 500;
     public static final int HEART_SIZE = 50;
-    public static final int ALIEN_SIZE = 100;
     public static final int ENEMY_BULLET_SIZE = 50;
     public static final int PLAYER_BULLET_SIZE = 30;
     public static final int BOOSTER_SIZE = 30;
