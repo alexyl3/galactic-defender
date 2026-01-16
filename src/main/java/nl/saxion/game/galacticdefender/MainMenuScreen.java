@@ -25,7 +25,8 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.addTexture("Button","textures/Other_graphics/Button.png");
         GameApp.addTexture("Customise_button","textures/other_graphics/customise_button.png");
         GameApp.addTexture("leaderboard_button","textures/other_graphics/leaderboard_button.png");
-        GameApp.addFont("Game_Paused","fonts/Game_Paused.otf",32);
+        GameApp.addTexture("frame","textures/other_graphics/neon_frame.png");
+        GameApp.addFont("Game_Paused","fonts/Game_Paused.otf",50);
         GameApp.addTexture("Customise_button","textures/Other_graphics/customise_button-removebg-preview.png");
         GameApp.addTexture("shop_button","textures/other_graphics/shop_button.png");
 
@@ -61,7 +62,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
         GameApp.drawTexture("background",0,0, getWorldWidth(), getWorldHeight());
-        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth()+50,100);
+//        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth()+50,100);
 
         float btnX = getWorldWidth() / 2f - 50;   // button width ~160
         float btnY = getWorldHeight() / 2f - 130;  // lower
@@ -75,7 +76,8 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.drawTexture("leaderboard_button",getWorldWidth()-95,getWorldHeight()-50, 32, 32);
         GameApp.drawTexture("customise_button",getWorldWidth()-500,getWorldHeight()-100);
         GameApp.drawTexture("shop_button",getWorldWidth()-510,getWorldHeight()-180);
-        GameApp.drawText(title,"Galactic Defender",textX + 150,textY+10,"white");
+        GameApp.drawTextCentered(title,"Galactic Defender",GameApp.getWorldWidth() / 2, textY+60,"white");
+        GameApp.drawTextureCentered("frame", GameApp.getWorldWidth() / 2, textY+60, 500, 120);
         GameApp.drawText("Pixel_Emulator", "Press ENTER to save", 50, textY - 230, "white");
         GameApp.drawText("Pixel_Emulator", "Enter username: ", 50, textY - 200, "white");
         if (usernameSaved) {
@@ -112,9 +114,8 @@ public class MainMenuScreen extends ScalableGameScreen {
 
     @Override
     public boolean keyTyped(char character) {
-        if(character == '\b') { // Backspace
+        if(character == '\b') {
             if(!currentText.isEmpty()) {
-                // Remove the last character
                 usernameSaved = false;
                 currentText = currentText.substring(0, currentText.length() - 1);
             }
@@ -122,7 +123,6 @@ public class MainMenuScreen extends ScalableGameScreen {
             usernameSaved = true;
             username = currentText;
         } else {
-            // Add the typed character
             usernameSaved = false;
             currentText += character;
         }
