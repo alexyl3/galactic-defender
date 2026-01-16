@@ -20,6 +20,7 @@ public class GameScreen extends ScalableGameScreen {
     public static int SCORE = 0;
     public static int START_GAME = 0;
     public static int activeSpaceship = 0;
+    public static ArrayList<Integer> activators = new ArrayList<>();
     public static int coin_display = 0;
     public static int STAGE = 0;
     ArrayList<String> environments =  new ArrayList<>(Arrays.asList("basic", "fire", "ice", "desert"
@@ -70,7 +71,9 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.addTexture("space-bg", "textures/" + environments.get(STAGE) + "_textures/space.png");
         GameApp.addTexture("spaceship", "textures/shop_textures/" + activeSpaceship + "_spaceship.png");
         GameApp.addTexture("alien", "textures/" + environments.get(STAGE) + "_textures/alien.png");
-
+        for (int i : activators) {
+            GameApp.addTexture("activator" + i, "textures/shop_textures/" + i + "_activator.png");
+        }
         GameApp.addTexture("player_shot", "textures/Other_graphics/shot.png");
         GameApp.addTexture("heart", "textures/Other_graphics/heart.png");
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 16);
@@ -147,6 +150,9 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.drawText("Pixel_Emulator", "score: " + SCORE,  getWorldWidth() - 140, getWorldHeight() - 35, "white");
         GameApp.drawText("Pixel_Emulator", "coins: " + coin_display,  getWorldWidth() - 140, getWorldHeight() - 65, "white");
         GameApp.drawTexture("spaceship", player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
+        for (int i : activators) {
+            GameApp.drawTexture("activator" + i, player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE);
+        }
         if (booster_activated.type.equals("shield_booster") && shield_activated_timer > 0) {
             GameApp.drawTexture("shield", player.x - 5, player.y - 5, SPACESHIP_SIZE + 10
                     , SPACESHIP_SIZE + 10);
@@ -167,7 +173,9 @@ public class GameScreen extends ScalableGameScreen {
         GameApp.disposeTexture("shield_booster");
         GameApp.disposeTexture("bullet_booster");
         GameApp.disposeSound("asteroid_damage");
-
+        for (int i : activators) {
+            GameApp.disposeTexture("activator" + i);
+        }
         GameApp.disposeTexture("shield");
 
         GameApp.disposeSound("laser");
@@ -242,9 +250,9 @@ public class GameScreen extends ScalableGameScreen {
         for (Asteroid asteroid : asteroids) {
             if (GameApp.rectOverlap(asteroid.x, asteroid.y, 80, 80, player.x, player.y, SPACESHIP_SIZE, SPACESHIP_SIZE) &&
                     asteroid.active) {
-                GameApp.playSound("asteroid_damage");
                 asteroid.active = false;
-                if (shield_activated_timer <= 0 && activeSpaceship != 2) {
+                if (shield_activated_timer <= 0 && !activators.contains(2)) {
+                    GameApp.playSound("asteroid_damage");
                     player.lives -= 2;
                 }
                 if (player.lives <= 0) {
@@ -281,7 +289,7 @@ public class GameScreen extends ScalableGameScreen {
     }
     public void createNewEntities() {
         if (player_bullet_timer >= 0.15) {
-            if (bullet_activated_timer > 0 && activeSpaceship == 1) {
+            if (bullet_activated_timer > 0 && activators.contains(1)) {
                 Bullet newBullet = new Bullet();
                 GameApp.addInterpolator("player_bullet" + player_bullets.size(), 0, getWorldHeight(), 5f, "pow2");
                 newBullet.x = (float) (player.x + SPACESHIP_SIZE / 2.6 - 15);
@@ -300,7 +308,7 @@ public class GameScreen extends ScalableGameScreen {
                 newBullet.y = getWorldHeight();
                 newBullet.interpolator = "player_bullet" + player_bullets.size();
                 player_bullets.add(newBullet);
-            } else if (bullet_activated_timer > 0 || activeSpaceship == 1) {
+            } else if (bullet_activated_timer > 0 || activators.contains(1)) {
                 Bullet newBullet = new Bullet();
                 GameApp.addInterpolator("player_bullet" + player_bullets.size(), 0, getWorldHeight(), 5f, "pow2");
                 newBullet.x = (float) (player.x + SPACESHIP_SIZE / 2.6 - 10);

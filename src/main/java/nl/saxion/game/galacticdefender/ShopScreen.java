@@ -13,7 +13,7 @@ public class ShopScreen extends ScalableGameScreen {
     public static final int itemSize = 100;
     public static final ArrayList<Integer> prices = new ArrayList<>(Arrays.asList(0, 40, 80));
     public static ArrayList<Integer> availableSpaceships = new ArrayList<>(List.of(0));
-    ArrayList<String> descriptions = new ArrayList<>(Arrays.asList("Basic", "Double bullets", "Asteroid protection"));
+    ArrayList<String> descriptions = new ArrayList<>(Arrays.asList("Current", "Double bullets", "Asteroid protection"));
     public ShopScreen() {
         super(500,800);
     }
@@ -28,8 +28,9 @@ public class ShopScreen extends ScalableGameScreen {
         GameApp.addTexture("activate", "textures/shop_textures/activate_button.png");
         GameApp.addTexture("buy", "textures/shop_textures/buy_button.png");
         GameApp.addTexture("coin","textures/basic_textures/coin.png");
-        for (int i = 0; i < itemsInShop; i++) {
-            GameApp.addTexture("item" + i,"textures/shop_textures/" + i + "_spaceship.png");
+        GameApp.addTexture("item0","textures/shop_textures/" + GameScreen.activeSpaceship + "_spaceship.png");
+        for (int i = 1; i < itemsInShop; i++) {
+            GameApp.addTexture("item" + i,"textures/shop_textures/" + i + "_activator.png");
         }
     }
 
@@ -45,18 +46,18 @@ public class ShopScreen extends ScalableGameScreen {
         GameApp.drawText("Pixel_Emulator", "coins: " + GameScreen.coin_display,  getWorldWidth() - 180, getWorldHeight() - 55, "white");
         GameApp.drawTexture("arrow", 20,getWorldHeight() - 60, 40, 40);
         GameApp.drawText("Pixel_Emulator_B","Shop",120,GameApp.getWorldHeight() - 55,"white");
-        for (int i = 0; i < itemsInShop; i++) {
-            GameApp.drawTexture("item" + i, 40, getWorldHeight() - 100 - (1 + i) * (60 + itemSize), itemSize, itemSize);
-            if (i == GameScreen.activeSpaceship) {
-                GameApp.drawTexture("active", 300, getWorldHeight() - 100 - (1 + i) * (60 + itemSize));
+        for (int i = 1; i < itemsInShop; i++) {
+            GameApp.drawTexture("item" + i, 40, getWorldHeight() + 50 - (1 + i) * (60 + itemSize), itemSize, itemSize);
+            if (GameScreen.activators.contains(i)) {
+                GameApp.drawTexture("active", 300, getWorldHeight() + 50 - (1 + i) * (60 + itemSize));
             } else if (availableSpaceships.contains(i)) {
-                GameApp.drawTexture("activate", 300, getWorldHeight() - 100 - (1 + i) * (60 + itemSize));
+                GameApp.drawTexture("activate", 300, getWorldHeight() + 50 - (1 + i) * (60 + itemSize));
             } else {
-                GameApp.drawTexture("coin",180, getWorldHeight() - 100 - (1 + i) * (40 + itemSize), 20, 20 );
-                GameApp.drawText("Pixel_Emulator", prices.get(i) + "" ,220, getWorldHeight() - 100 - (1 + i) * (60 + itemSize), "white");
-                GameApp.drawTexture("buy", 300, getWorldHeight() - 100 - (1 + i) * (60 + itemSize));
+                GameApp.drawTexture("coin",180, getWorldHeight() + 50 - (1 + i) * (40 + itemSize), 20, 20 );
+                GameApp.drawText("Pixel_Emulator", prices.get(i) + "" ,220, getWorldHeight() + 50 - (1 + i) * (40 + itemSize), "white");
+                GameApp.drawTexture("buy", 300, getWorldHeight()  + 50 - (1 + i) * (60 + itemSize));
             }
-            GameApp.drawText("Pixel_Emulator", descriptions.get(i), 40, getWorldHeight() + 20 - (1 + i) * (60 + itemSize), "white");
+            GameApp.drawText("Pixel_Emulator", descriptions.get(i), 40, getWorldHeight() + 170 - (1 + i) * (60 + itemSize), "white");
         }
 
         GameApp.endSpriteRendering();
@@ -84,10 +85,10 @@ public class ShopScreen extends ScalableGameScreen {
         if (GameApp.isKeyJustPressed(Input.Keys.ESCAPE) || (GameApp.pointInRect(mouseX, mouseY, 20, getWorldHeight() - 60, 40, 40) && GameApp.isButtonJustPressed(Input.Buttons.LEFT))) {
             GameApp.switchScreen("MainMenuScreen");
         }
-        for (int i = 0; i < itemsInShop; i++) {
-            if (GameApp.isButtonJustPressed(Input.Buttons.LEFT) && GameApp.pointInRect(mouseX, mouseY, 300, getWorldHeight() - 100 - (1 + i) * (60 + itemSize), 180, 70)) {
-                if (availableSpaceships.contains(i) && GameScreen.activeSpaceship != i) {
-                    GameScreen.activeSpaceship = i;
+        for (int i = 1; i < itemsInShop; i++) {
+            if (GameApp.isButtonJustPressed(Input.Buttons.LEFT) && GameApp.pointInRect(mouseX, mouseY, 300, getWorldHeight() + 50 - (1 + i) * (60 + itemSize), 180, 70)) {
+                if (availableSpaceships.contains(i) && !GameScreen.activators.contains(i)) {
+                    GameScreen.activators.add(i);
                 } else if (!availableSpaceships.contains(i) && GameScreen.coin_display >= prices.get(i)) {
                     GameScreen.coin_display -= prices.get(i);
                     availableSpaceships.add(i);

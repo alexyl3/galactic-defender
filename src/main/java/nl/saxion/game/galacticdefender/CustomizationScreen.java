@@ -16,7 +16,7 @@ public class CustomizationScreen extends ScalableGameScreen {
     @Override
     public void show() {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
-        GameApp.addTexture("customization_background","textures/Other_Backgrounds/customization_background.jpg");
+        GameApp.addTexture("customization_background","textures/Other_Backgrounds/customization_bg.jpg");
         GameApp.addTexture("spaceship1","textures/shop_textures/0_spaceship.png");
         GameApp.addTexture("leftArrow","textures/shop_textures/back_arrow.png");
         GameApp.addTexture("rightArrow","textures/shop_textures/right_arrow.png");
@@ -39,12 +39,12 @@ public class CustomizationScreen extends ScalableGameScreen {
         GameApp.clearScreen();
         GameApp.startSpriteRendering();
         GameApp.drawTexture("customization_background",0,0,getWorldWidth(),getWorldHeight());
-        GameApp.drawText("Pixel_Emulator","Customization Screen",50,650,"white");
-        GameApp.drawText("Pixel_Emulator","Press enter to select ",50,550,"white");
-        GameApp.drawText("Pixel_Emulator","your spaceship",50,500,"white");
+        GameApp.drawTextCentered("Pixel_Emulator","Customization Screen",getWorldWidth() / 2,620,"white");
+        GameApp.drawTextCentered("Pixel_Emulator","Press enter to select ",getWorldWidth() / 2,550,"white");
+        GameApp.drawTextCentered("Pixel_Emulator","your spaceship",getWorldWidth() / 2,500,"white");
 
         String currShip = ships[index];
-        GameApp.drawTexture(currShip,getWorldWidth() / 2f - 64,getWorldHeight() / 2f - 64);
+        GameApp.drawTextureCentered(currShip,getWorldWidth() / 2,getWorldHeight() / 2f, GameScreen.SPACESHIP_SIZE + 50, GameScreen.SPACESHIP_SIZE + 50);
 
 
         GameApp.drawTexture("leftArrow",40,getWorldHeight() / 2f - 25,40, 50);
