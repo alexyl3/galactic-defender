@@ -70,7 +70,6 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.drawTexture("play_button", btnX, btnY, 120, 120);
 
         String title = "Game_Paused";
-        float textX = getWorldWidth()/2f-300;
         float textY = getWorldHeight()/2f+20;
         GameApp.drawTexture("Button",getWorldWidth()-50,getWorldHeight()-50);
         GameApp.drawTexture("leaderboard_button",getWorldWidth()-95,getWorldHeight()-50, 32, 32);
