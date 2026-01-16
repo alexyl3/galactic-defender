@@ -116,7 +116,7 @@ public class GameScreen extends ScalableGameScreen {
         }
 
         if (player.lives <= 0) {
-            GameApp.playSound("explosion");
+            GameApp.playSound("explosion", 0.2f);
             timeOut();
             GameApp.switchScreen("GameOverScreen");
         }
@@ -213,7 +213,7 @@ public class GameScreen extends ScalableGameScreen {
                     player.lives -= 5;
                 }
                 if (player.lives <= 0) {
-                    GameApp.playSound("explosion");
+                    GameApp.playSound("explosion", 0.2f);
                     timeOut();
                     GameApp.switchScreen("GameOverScreen");
                 }
@@ -228,7 +228,7 @@ public class GameScreen extends ScalableGameScreen {
                     player.lives -= 1;
                 }
                 if (player.lives <= 0) {
-                    GameApp.playSound("explosion");
+                    GameApp.playSound("explosion", 0.2f);
                     timeOut();
                     GameApp.switchScreen("GameOverScreen");
                 }
@@ -256,7 +256,7 @@ public class GameScreen extends ScalableGameScreen {
                     player.lives -= 2;
                 }
                 if (player.lives <= 0) {
-                    GameApp.playSound("explosion");
+                    GameApp.playSound("explosion", 0.2f);
                     timeOut();
                     GameApp.switchScreen("GameOverScreen");
                 }
