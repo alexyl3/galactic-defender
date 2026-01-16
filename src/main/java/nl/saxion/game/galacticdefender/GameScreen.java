@@ -74,15 +74,15 @@ public class GameScreen extends ScalableGameScreen {
         for (int i : activators) {
             GameApp.addTexture("activator" + i, "textures/shop_textures/" + i + "_activator.png");
         }
-        GameApp.addTexture("player_shot", "textures/Other_graphics/shot.png");
-        GameApp.addTexture("heart", "textures/Other_graphics/heart.png");
+        GameApp.addTexture("player_shot", "textures/other_graphics/shot.png");
+        GameApp.addTexture("heart", "textures/other_graphics/heart.png");
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 16);
-        GameApp.addTexture("enemy_shot", "textures/Other_graphics/BulletFire.png");
+        GameApp.addTexture("enemy_shot", "textures/other_graphics/BulletFire.png");
         GameApp.addTexture("Asteroid", "textures/" + environments.get(STAGE) + "_textures/asteroid.png");
-        GameApp.addTexture("bullet_booster", "textures/Other_graphics/bullet_booster.png");
-        GameApp.addTexture("shield_booster", "textures/Other_graphics/shield_booster.png");
-        GameApp.addTexture("health_booster", "textures/Other_graphics/health_booster.png");
-        GameApp.addTexture("shield", "textures/Other_graphics/spr_shield.png");
+        GameApp.addTexture("bullet_booster", "textures/other_graphics/bullet_booster.png");
+        GameApp.addTexture("shield_booster", "textures/other_graphics/shield_booster.png");
+        GameApp.addTexture("health_booster", "textures/other_graphics/health_booster.png");
+        GameApp.addTexture("shield", "textures/other_graphics/spr_shield.png");
         GameApp.addTexture("coin","textures/basic_textures/coin.png");
 
         GameApp.addSound("laser", "audio/Laser.wav");
@@ -188,7 +188,7 @@ public class GameScreen extends ScalableGameScreen {
         if (GameApp.isKeyJustPressed(Input.Keys.P) || GameApp.isKeyPressed(Input.Keys.ESCAPE)) {
             GameApp.switchScreen("PauseScreen");
         }
-        if (GameApp.isKeyJustPressed(Input.Keys.E) && shield_activated_timer <= 0 && bullet_activated_timer <= 0) {
+        if (GameApp.isKeyJustPressed(Input.Keys.E) && shield_activated_timer <= 0 && bullet_activated_timer <= 0 && !collected_boosters.isEmpty()) {
             booster_activated = collected_boosters.getLast();
             collected_boosters.removeLast();
             if (booster_activated.type.equals("shield_booster")) {
