@@ -51,7 +51,8 @@ public class NewStageScreen extends ScalableGameScreen {
         if (GameScreen.STAGE == 4) {
             GameApp.drawTextCentered("Pixel_Emulator", "Round " + GameScreen.STAGE , 300,text1Y, "white");
             GameApp.drawTextCentered("Pixel_Emulator", "Complete " , 300, text2Y, "white");
-            GameApp.drawTextCentered("Pixel_Emulator", "Press SPACE \n to start the boss fight", 300, getWorldHeight() / 2 - 100, "white");
+            GameApp.drawTextCentered("Pixel_Emulator", "Press SPACE", getWorldWidth() / 2, getWorldHeight() / 2 - 100, "white");
+            GameApp.drawTextCentered("Pixel_Emulator", "to start the boss fight", getWorldWidth() / 2, getWorldHeight() / 2 - 130, "white");
         } else {
             GameApp.drawTextCentered("Pixel_Emulator", "Round " + GameScreen.STAGE , 300,text1Y, "white");
             GameApp.drawTextCentered("Pixel_Emulator", "Complete " , 300, text2Y, "white");
