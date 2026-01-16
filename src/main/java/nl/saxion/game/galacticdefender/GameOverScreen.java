@@ -14,10 +14,11 @@ public class GameOverScreen extends ScalableGameScreen {
     @Override
     public void show() {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
+        GameApp.addFont("title", "fonts/Pixel_Emulator.otf", 40);
+        GameApp.addSound("lose", "audio/lose_sound.wav");
         GameApp.addTexture("GameOverBackground", "textures/Other_Backgrounds/GameOverBackground.png");
-//        GameApp.addParticleEffect("flame", "textures/flame-particle/flame.p");
-//        long effectId = GameApp.spawnParticleEffect("flame", 450, 400);
         GameApp.debug(GameScreen.SCORE);
+        GameApp.playSound("lose");
     }
 
 
@@ -31,12 +32,12 @@ public class GameOverScreen extends ScalableGameScreen {
 
         GameApp.drawTexture("GameOverBackground",0,0,getWorldWidth(),getWorldHeight());
         String title = "Pixel_Emulator";
-        float textX1 = getWorldWidth()/2f-100;
         float textY1 = getWorldHeight()/2f+20;
-        GameApp.drawText(title,"GAME OVER",textX1,textY1,"white");
-        GameApp.drawText(title,"Press space to go back",textX1-130,textY1-200,"white");
-        GameApp.drawText(title,"to the main menu",textX1-90,textY1-250,"white");
-        GameApp.drawText(title,"Press C to continue by spending 5 coins",textX1-120,textY1-300,"white");
+        GameApp.drawTextCentered("title","GAME OVER",getWorldWidth() / 2,textY1,"white");
+        GameApp.drawTextCentered(title,"Press space to go",getWorldWidth() / 2,textY1-100,"white");
+        GameApp.drawTextCentered(title,"to the main menu",getWorldWidth() / 2,textY1-130,"white");
+        GameApp.drawTextCentered(title,"Press C to continue",getWorldWidth() / 2,textY1-200,"white");
+        GameApp.drawTextCentered(title,"by spending 5 coins",getWorldWidth() / 2,textY1-230,"white");
         GameApp.renderParticleEffects();
 
 
