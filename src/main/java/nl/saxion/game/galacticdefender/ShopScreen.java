@@ -11,7 +11,7 @@ import java.util.List;
 public class ShopScreen extends ScalableGameScreen {
     public static final int itemsInShop = 3;
     public static final int itemSize = 100;
-    public static final ArrayList<Integer> prices = new ArrayList<>(Arrays.asList(20, 30, 40));
+    public static final ArrayList<Integer> prices = new ArrayList<>(Arrays.asList(0, 40, 80));
     public static ArrayList<Integer> availableSpaceships = new ArrayList<>(List.of(0));
     ArrayList<String> descriptions = new ArrayList<>(Arrays.asList("Basic", "Double bullets", "Asteroid protection"));
     public ShopScreen() {
@@ -53,8 +53,8 @@ public class ShopScreen extends ScalableGameScreen {
                 GameApp.drawTexture("activate", 300, getWorldHeight() - 100 - (1 + i) * (60 + itemSize));
             } else {
                 GameApp.drawTexture("coin",180, getWorldHeight() - 100 - (1 + i) * (40 + itemSize), 20, 20 );
-                GameApp.drawText("Pixel_Emulator", prices.get(i) + "" ,220, getWorldHeight() - 100 - (1 + i) * (40 + itemSize), "white");
-                GameApp.drawTexture("buy", 300, getWorldHeight() - 100 - (1 + i) * (50 + itemSize));
+                GameApp.drawText("Pixel_Emulator", prices.get(i) + "" ,220, getWorldHeight() - 100 - (1 + i) * (60 + itemSize), "white");
+                GameApp.drawTexture("buy", 300, getWorldHeight() - 100 - (1 + i) * (60 + itemSize));
             }
             GameApp.drawText("Pixel_Emulator", descriptions.get(i), 40, getWorldHeight() + 20 - (1 + i) * (60 + itemSize), "white");
         }
@@ -85,7 +85,7 @@ public class ShopScreen extends ScalableGameScreen {
             GameApp.switchScreen("MainMenuScreen");
         }
         for (int i = 0; i < itemsInShop; i++) {
-            if (GameApp.isButtonJustPressed(Input.Buttons.LEFT) && GameApp.pointInRect(mouseX, mouseY, 300, getWorldHeight() - 100 - (1 + i) * (40 + itemSize), 180, 70)) {
+            if (GameApp.isButtonJustPressed(Input.Buttons.LEFT) && GameApp.pointInRect(mouseX, mouseY, 300, getWorldHeight() - 100 - (1 + i) * (60 + itemSize), 180, 70)) {
                 if (availableSpaceships.contains(i) && GameScreen.activeSpaceship != i) {
                     GameScreen.activeSpaceship = i;
                 } else if (!availableSpaceships.contains(i) && GameScreen.coin_display >= prices.get(i)) {

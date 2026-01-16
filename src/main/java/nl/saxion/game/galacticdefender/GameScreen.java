@@ -125,7 +125,7 @@ public class GameScreen extends ScalableGameScreen {
         handlePlayerInput(delta);
         createNewEntities();
 
-        spaceOffset -= BG_SPEED * delta  * (1 + (float) 0.15* STAGE);
+        spaceOffset -= BG_SPEED * delta  * (1 + (float) 0.15 * STAGE);
         if (spaceOffset < -1 * GameApp.getTextureHeight("space-bg")) {
             spaceOffset = 0;
         }
@@ -177,7 +177,7 @@ public class GameScreen extends ScalableGameScreen {
     }
 
     public void handlePlayerInput(float delta) {
-        if (GameApp.isKeyJustPressed(Input.Keys.P)) {
+        if (GameApp.isKeyJustPressed(Input.Keys.P) || GameApp.isKeyPressed(Input.Keys.ESCAPE)) {
             GameApp.switchScreen("PauseScreen");
         }
         if (GameApp.isKeyJustPressed(Input.Keys.E) && shield_activated_timer <= 0 && bullet_activated_timer <= 0) {
@@ -195,9 +195,6 @@ public class GameScreen extends ScalableGameScreen {
             player.x += SPACESHIP_SPEED * delta  * (1 + (float) 0.15* STAGE);
         }
         player.x = GameApp.clamp(player.x, 0, getWorldWidth() - SPACESHIP_SIZE);
-        if (GameApp.isKeyPressed(Input.Keys.ESCAPE)) {
-            GameApp.switchScreen("PauseScreen");
-        }
     }
 
     public void handleCollision() {

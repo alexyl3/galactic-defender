@@ -23,8 +23,10 @@ public class PauseScreen extends ScalableGameScreen{
         if (GameApp.isKeyJustPressed(Input.Keys.ESCAPE)) {
             GameScreen.START_GAME = 1;
             GameApp.switchScreen("MainMenuScreen");
-        } else if (GameApp.isKeyJustPressed(Input.Keys.SPACE)) {
+        } else if (GameApp.isKeyJustPressed(Input.Keys.SPACE) && GameScreen.STAGE != 4) {
             GameApp.switchScreen("GameScreen");
+        } else if (GameApp.isKeyJustPressed(Input.Keys.SPACE) && GameScreen.STAGE == 4) {
+            GameApp.switchScreen("BossFightScreen");
         }
         GameApp.clearScreen();
         GameApp.startSpriteRendering();
@@ -34,8 +36,8 @@ public class PauseScreen extends ScalableGameScreen{
         float textX1 = getWorldWidth()/2f-100;
         float textY1 = getWorldHeight()/2f+20;
         GameApp.drawText(title,"Paused",textX1,textY1,"white");
-        GameApp.drawText(title,"Press space to continue",textX1-130,textY1-200,"white");
-        GameApp.drawText(title,"Press esc to exit",textX1-90,textY1-250,"white");
+        GameApp.drawTextCentered(title,"Press space to continue",getWorldWidth() / 2,textY1-100,"white");
+        GameApp.drawTextCentered(title,"Press esc to exit",getWorldWidth() / 2,textY1-150,"white");
 
         GameApp.endSpriteRendering();
 
