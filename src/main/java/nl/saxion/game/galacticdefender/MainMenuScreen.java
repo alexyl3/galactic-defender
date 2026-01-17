@@ -19,15 +19,12 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.addFont("basic", "fonts/basic.ttf", 100);
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 20);
         GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
-        GameApp.addTexture("play_button", "textures/Other_graphics/play_button.png");
-        GameApp.addTexture("Rectangle_box", "textures/Other_graphics/Rectangle_box.png");
-        GameApp.addTexture("asteriod", "textures/Other_graphics/asteriod.png");
-        GameApp.addTexture("Button","textures/Other_graphics/Button.png");
-        GameApp.addTexture("Customise_button","textures/other_graphics/customise_button.png");
+        GameApp.addTexture("play_button", "textures/other_graphics/play_button.png");
+        GameApp.addTexture("Button", "textures/other_graphics/Button.png");
         GameApp.addTexture("leaderboard_button","textures/other_graphics/leaderboard_button.png");
         GameApp.addTexture("frame","textures/other_graphics/neon_frame.png");
-        GameApp.addFont("Game_Paused","fonts/Game_Paused.otf",50);
-        GameApp.addTexture("Customise_button","textures/Other_graphics/customise_button-removebg-preview.png");
+        GameApp.addFont("Game_Paused","fonts/Game_Paused.otf",40);
+        GameApp.addTexture("Customise_button", "textures/other_graphics/customise_button-removebg-preview.png");
         GameApp.addTexture("shop_button","textures/other_graphics/shop_button.png");
 
         GameApp.addMusic("menu_music", "audio/game_loop_music.mp3");
@@ -62,7 +59,6 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
         GameApp.drawTexture("background",0,0, getWorldWidth(), getWorldHeight());
-//        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth()+50,100);
 
         float btnX = getWorldWidth() / 2f - 50;   // button width ~160
         float btnY = getWorldHeight() / 2f - 130;  // lower
@@ -85,7 +81,7 @@ public class MainMenuScreen extends ScalableGameScreen {
             usernameColor = "white";
         }
         if (cursorBlink < 0.5) {
-            GameApp.drawText("Pixel_Emulator",  currentText + "|", 280, textY - 200, usernameColor);
+            GameApp.drawText("Pixel_Emulator",  currentText + "|", 300, textY - 200, usernameColor);
         } else {
             if (cursorBlink > 1) {
                 cursorBlink = 0;
@@ -103,7 +99,6 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.disposeFont("Pixel_Emulator");
         GameApp.disposeTexture("background");
         GameApp.disposeTexture("play_button");
-        GameApp.disposeTexture("Rectangle_box");
         GameApp.disposeTexture("Button");
         GameApp.disposeTexture("shop_button");
         GameApp.disposeTexture("Customise_button");

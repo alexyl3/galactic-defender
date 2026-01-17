@@ -12,7 +12,7 @@ public class ManualScreen extends ScalableGameScreen {
     @Override
     public void show(){
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
-        GameApp.addTexture("ManualBackground", "textures/Other_graphics/ManualBackground.png");
+        GameApp.addTexture("ManualBackground", "textures/other_graphics/ManualBackground.png");
         GameApp.addTexture("arrow", "textures/shop_textures/back_arrow.png");
     }
 

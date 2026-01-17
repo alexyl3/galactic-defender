@@ -14,7 +14,7 @@ public class VictoryScreen extends ScalableGameScreen{
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 25);
         GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
         GameApp.addSound("victory", "audio/victory.wav");
-        GameApp.addSpriteSheet("fire", "textures/Other_graphics/fireworks.png", 200, 250);
+        GameApp.addSpriteSheet("fire", "textures/other_graphics/fireworks.png", 200, 250);
         GameApp.addAnimationFromSpritesheet("fireworks", "fire", 0.2f, true);
 
         GameApp.playSound("victory", 0.7f);

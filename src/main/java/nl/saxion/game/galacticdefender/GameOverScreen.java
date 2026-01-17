@@ -37,7 +37,7 @@ public class GameOverScreen extends ScalableGameScreen {
         GameApp.drawTextCentered(title,"Press space to go",getWorldWidth() / 2,textY1-100,"white");
         GameApp.drawTextCentered(title,"to the main menu",getWorldWidth() / 2,textY1-130,"white");
         GameApp.drawTextCentered(title,"Press C to continue",getWorldWidth() / 2,textY1-200,"white");
-        GameApp.drawTextCentered(title,"by spending 5 coins",getWorldWidth() / 2,textY1-230,"white");
+        GameApp.drawTextCentered(title,"by spending 10 coins",getWorldWidth() / 2,textY1-230,"white");
         GameApp.renderParticleEffects();
 
 
@@ -54,10 +54,10 @@ public class GameOverScreen extends ScalableGameScreen {
             GameApp.switchScreen("MainMenuScreen");
 
         }
-        if(GameApp.isKeyPressed(Input.Keys.C)){
-            if(GameScreen.coin_display >= 5)
-            { GameScreen.coin_display -=5;
-            GameApp.switchScreen("GameScreen");}
+        if(GameApp.isKeyPressed(Input.Keys.C) && GameScreen.coin_display >= 10){
+            GameScreen.coin_display -= 10;
+            GameScreen.player.lives += 5;
+            GameApp.switchScreen("GameScreen");
         }
 
     }

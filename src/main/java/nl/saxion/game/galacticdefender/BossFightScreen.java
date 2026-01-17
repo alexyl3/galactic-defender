@@ -30,10 +30,10 @@ public class BossFightScreen  extends ScalableGameScreen {
         boss.x = 50;
         boss.y = 520;
         GameApp.addTexture("background", "textures/basic_textures/space.png");
-        GameApp.addTexture("boss", "textures/Other_graphics/BossSpaceship.png");
-        GameApp.addTexture("heart", "textures/Other_graphics/heart.png");
-        GameApp.addTexture("enemy_shot", "textures/Other_graphics/BulletFire.png");
-        GameApp.addTexture("player_shot", "textures/Other_graphics/shot.png");
+        GameApp.addTexture("boss", "textures/other_graphics/BossSpaceship.png");
+        GameApp.addTexture("heart", "textures/other_graphics/heart.png");
+        GameApp.addTexture("enemy_shot", "textures/other_graphics/BulletFire.png");
+        GameApp.addTexture("player_shot", "textures/other_graphics/shot.png");
         GameApp.addSound("explosion", "audio/SpaceshipExplosion.wav");
         GameApp.addMusic("music", "audio/BossFightBgm.mp3");
         GameApp.addSound("laser", "audio/Laser.wav");
