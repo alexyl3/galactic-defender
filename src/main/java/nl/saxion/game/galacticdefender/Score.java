@@ -6,7 +6,7 @@ public class Score implements Comparable<Score> {
 
     @Override
     public int compareTo(Score otherScore) {
-        return Integer.compare(score, otherScore.score);
+        return Integer.compare(otherScore.score, score);
     }
 }
 
