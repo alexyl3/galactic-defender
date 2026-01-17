@@ -22,7 +22,6 @@ public class LeaderboardScreen extends ScalableGameScreen{
         GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
         results = GameOverScreen.scores;
         Collections.sort(results);
-        GameApp.debug(results);
     }
 
 
@@ -47,6 +46,7 @@ public class LeaderboardScreen extends ScalableGameScreen{
             for (Score score: results) {
                 GameApp.drawText("main_text", score.username, 50, 600 - i * 20, "white");
                 GameApp.drawText("main_text", score.score + "", 150, 600 - i * 20, "white");
+                i += 1;
             }
         }
         GameApp.endSpriteRendering();

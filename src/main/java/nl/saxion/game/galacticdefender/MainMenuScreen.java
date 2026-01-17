@@ -86,7 +86,7 @@ public class MainMenuScreen extends ScalableGameScreen {
             if (cursorBlink > 1) {
                 cursorBlink = 0;
             }
-            GameApp.drawText("Pixel_Emulator", currentText, 280, textY - 200, usernameColor);
+            GameApp.drawText("Pixel_Emulator", currentText, 300, textY - 200, usernameColor);
         }
         GameApp.endSpriteRendering();
 
