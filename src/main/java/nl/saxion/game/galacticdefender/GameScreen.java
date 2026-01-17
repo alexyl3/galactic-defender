@@ -23,6 +23,7 @@ public class GameScreen extends ScalableGameScreen {
     public static ArrayList<Integer> activators = new ArrayList<>();
     public static int coin_display = 0;
     public static int STAGE = 0;
+    public static SpaceShip player;
     ArrayList<String> environments =  new ArrayList<>(Arrays.asList("basic", "fire", "ice", "desert"
     ));
     ArrayList<Integer> available = new ArrayList<>(Arrays.asList(0, 50, 120, 100, 150, 170, 200, 230, 250, 300, 320, 350, 400));
@@ -38,7 +39,6 @@ public class GameScreen extends ScalableGameScreen {
     float bullet_activated_timer = 0;
     Booster booster_activated = new Booster();
     float coin_timer = 0;
-    SpaceShip player;
     ArrayList<Bullet> player_bullets = new ArrayList<>();
     ArrayList<Bullet> enemy_bullets = new ArrayList<>();
 

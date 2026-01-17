@@ -20,10 +20,7 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.addFont("Pixel_Emulator", "fonts/Pixel_Emulator.otf", 20);
         GameApp.addTexture("background", "textures/Other_Backgrounds/background.png");
         GameApp.addTexture("play_button", "textures/other_graphics/play_button.png");
-        GameApp.addTexture("Rectangle_box", "textures/other_graphics/Rectangle_box.png");
-        GameApp.addTexture("asteriod", "textures/other_graphics/asteriod.png");
         GameApp.addTexture("Button", "textures/other_graphics/Button.png");
-        GameApp.addTexture("Customise_button","textures/other_graphics/customise_button.png");
         GameApp.addTexture("leaderboard_button","textures/other_graphics/leaderboard_button.png");
         GameApp.addTexture("frame","textures/other_graphics/neon_frame.png");
         GameApp.addFont("Game_Paused","fonts/Game_Paused.otf",40);
@@ -62,7 +59,6 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.clearScreen("black");
         GameApp.startSpriteRendering();
         GameApp.drawTexture("background",0,0, getWorldWidth(), getWorldHeight());
-//        GameApp.drawTextureCentered("Rectangle_box",getWorldWidth()/2f,getWorldHeight()/2f+40,getWorldWidth()+50,100);
 
         float btnX = getWorldWidth() / 2f - 50;   // button width ~160
         float btnY = getWorldHeight() / 2f - 130;  // lower
@@ -103,7 +99,6 @@ public class MainMenuScreen extends ScalableGameScreen {
         GameApp.disposeFont("Pixel_Emulator");
         GameApp.disposeTexture("background");
         GameApp.disposeTexture("play_button");
-        GameApp.disposeTexture("Rectangle_box");
         GameApp.disposeTexture("Button");
         GameApp.disposeTexture("shop_button");
         GameApp.disposeTexture("Customise_button");
